@@ -22,4 +22,15 @@ const selectQuery =  (sQuery,params) => {
     })
 }
 
-module.exports = { connectToDba, selectQuery}
+const insertQuery = (sQuery,params) => {
+  return new Promise((resolve, reject) => {
+      connection.query(sQuery,params,  function(err) {
+        if (err) {
+          throw err
+        }
+        resolve("Inserted")
+      })
+  })
+}
+
+module.exports = { connectToDba, selectQuery,insertQuery}

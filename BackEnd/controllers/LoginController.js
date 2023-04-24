@@ -1,14 +1,14 @@
 const { response } = require('express')
-const { Client} = require('../Utils/mySQL')
 const  Utilisateur = require('../models/Utilisateur/Utilisateur')
 const bcrypt = require("bcrypt")
-const saltRounds = 10
 const jsonwebtoken = require('jsonwebtoken')
 
 const JWT_SECRET =
   "goK!pusp6ThEdURUtRenOwUhAsWUCLheBazl!uJLPlS8EbreWLdrupIwabRAsiBu";
 const loginClient =  async (req,res) => {
-    const result = await Utilisateur.selectUtilisateur(req.body.uname)
+    const username = req.body.username
+    const psw = req.body.password
+    const result = await Utilisateur.selectUtilisateur(username)
     //bcrypt.genSalt(saltRounds)
     /*.then(salt => {
         console.log('Salt: ', salt)
@@ -27,7 +27,7 @@ const loginClient =  async (req,res) => {
               });
         }
     }
-    const psw = req.body.psw
+    
     bcrypt
       .compare(psw, result.motDePasse)
       .then(response => {

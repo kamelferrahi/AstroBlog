@@ -15,7 +15,7 @@ const authenticationMiddleware = require('../Utils/JWT')
 //router.use(express.static('../vue'))
 const error =(error,req,res,next)=>{
     console.log(error)
-    res.redirect('/login')
+    res.redirect('/')
 }
 router.use([authenticationMiddleware])
 router.use(error)
