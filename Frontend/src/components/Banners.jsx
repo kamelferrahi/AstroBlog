@@ -15,7 +15,7 @@ class Banners extends React.Component {
     render() {
         return (
             <div className="w-full flex flex-col gap-8 mt-16">
-                {this.state.banners.map(function (banner) { return <img src={banner} className="object-cover h-full w-full" /> })}
+                {this.state.banners.map(function (banner) { return <img key={banner + "_banner"} src={banner} className="object-cover h-full w-full" /> })}
             </div>
         );
     }

@@ -28,14 +28,6 @@ html body {
   overflow-x: hidden;
   overflow-y: auto;
 }
-html body ::-moz-placeholder {
-  color: #ccc;
-  opacity: 1;
-}
-html body ::placeholder {
-  color: #ccc;
-  opacity: 1;
-}
 html body #root {
   width: 100%;
   height: 100%;

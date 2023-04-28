@@ -13,10 +13,10 @@ class Home extends React.Component {
         return (
             <div className="bg-gradient-to-b from-page-light-dark to-page-dark w-full h-full">
                 <AnimatedBg />
-                <div className="page-container absolute top-0 left-0 z-10 px-20  overflow-x-hidden overflow-y-auto">
+                <div className="page-container absolute top-0 left-0 z-10 overflow-x-hidden overflow-y-auto">
                     <FeedNavBar />
                     <TopArticles />
-                    <div className="grid grid-cols-8 grid-rows-1 gap-8 mt-4 mb-16">
+                    <div className="px-20 grid grid-cols-8 grid-rows-1 gap-8 mt-4 mb-16">
                         <Banners />
                         <Feed />
                         <Contacts />
