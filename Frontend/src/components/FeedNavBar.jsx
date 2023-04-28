@@ -29,7 +29,7 @@ class FeedNavBar extends React.Component {
             <div className="px-20 flex flex-row items-center justify-between gap-4 py-10">
                 <div className="flex flex-col items-center justify-center">
                     <img src={logo} alt="logo" className="h-10 -rotate-logo" />
-                    <span className="font-semibold text-sm text-white">Astrotech</span>
+                    <span className="logo font-semibold text-sm text-white">Astrotech</span>
                 </div>
                 <div className="flex flex-row items-center justify-between border border-feed-border border-2 p-4 rounded-md w-5/6 gap-2">
                     <img src={searchIcon} alt="search" className="h-[20px] w-[20px] opacity-[.7]" />

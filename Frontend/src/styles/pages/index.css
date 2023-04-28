@@ -7,6 +7,7 @@
   --image-unit-size: 10px;
   --light-color: #DE30B7;
   --dark-color: #6A1056;
+  --footer-gradient: linear-gradient(rgba(222, 48, 183, .8) -20%, rgba(106, 16, 86, .9) 40%);
   --gradient-deg: 90deg;
   --gradient: linear-gradient(var(--gradient-deg), var(--light-color), var(--dark-color) 100%);
 }

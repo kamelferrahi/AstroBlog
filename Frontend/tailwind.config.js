@@ -33,6 +33,7 @@ module.exports = {
       },
       fontFamily: {
         'text': ['Inter', 'ui-sans-serif'],
+        'logo': ['Nasalization', 'ui-sans-serif']
       },
       backgroundImage: {
         signIllustration: "url('../../assets/images/bg.png')",

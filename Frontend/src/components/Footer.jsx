@@ -9,10 +9,10 @@ class Footer extends React.Component {
             <div id="footer" className="px-60 pt-24 relative">
                 <div id="footer-bg">
                 </div>
-                <div id="footer-content">
+                <div>
                     <div className="flex flex-col items-center justify-center mb-4">
                         <img src={logo} alt="logo" className="h-12 object-cover -rotate-logo" />
-                        <span className="text-card-title text-white font-bold">Astrotech</span>
+                        <span className="text-card-title text-white font-bold logo">Astrotech</span>
                     </div>
                     <div className="flex flex-row items-center justify-between gap-10 mb-8 px-16">
                         <p className="text-white text-mini-text text-justify">

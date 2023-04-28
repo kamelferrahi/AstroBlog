@@ -100,7 +100,7 @@ class Contacts extends React.Component {
     }
     render() {
         return (
-            <div className="col-span-2">
+            <div className="sticky top-4">
                 <div className="mt-16">
                     <div className="flex flex-row justify-start items-center gap-2 mb-4">
                         <img src={suggestionsIcon} alt="suggestions" className="h-[20px] w-[20px]" />

@@ -11,8 +11,8 @@ class SignupForm extends React.Component {
         return (
             <div className="px-20 py-5 flex flex-col items-start justify-between">
                 <div className='flex flex-row justify-start items-center gap-2 mb-10'>
-                    <img src={logo} alt="logo" className='h-8 w-8 invert' />
-                    <span className='font text-lg font-medium text-text font-semibold'>Astrotech</span>
+                    <img src={logo} alt="logo" className='h-8 w-8 invert -rotate-logo' />
+                    <span className='font text-lg font-medium text-text font-semibold logo'>Astrotech</span>
                 </div>
                 <div className='flex flex-col justify-center items-start w-full my-5'>
                     <h1 className='block text-2xl text-black font-bold'>Explore the world through our words</h1>
