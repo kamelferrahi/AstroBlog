@@ -24,7 +24,7 @@ class SettingsNavBar extends React.Component {
 
     render() {
         return (
-            <div className="flex flex-row items-center justify-between gap-4 py-10">
+            <div className="flex flex-row items-center justify-between gap-4 py-10 px-20">
                 <div className="flex flex-col items-center justify-center">
                     <img src={logo} alt="logo" className="h-12 w-12" />
                     <span className="font-semibold text-sm text-white">Astrotech</span>

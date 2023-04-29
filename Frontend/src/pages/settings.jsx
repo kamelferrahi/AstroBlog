@@ -12,7 +12,7 @@ class Settings extends React.Component {
             <AnimatedBg />
             <div className="relative z-10">
                 <SettingsNavBar />
-                <div className="flex mt-12 gap-16 mb-16 ml-16">
+                <div className="flex mt-12 gap-16 mb-16 px-20">
                     <SideBar />
                     <SettingsContent /> 
                 </div>
