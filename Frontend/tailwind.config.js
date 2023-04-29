@@ -21,6 +21,7 @@ module.exports = {
         'page-dark': '#1D1D1D',
         'subtitle': '#727272',
         'description': '#C2C2C2',
+        'textarea': '#ffffff34',
       },
       fontSize: {
         '5xl': '9rem',
@@ -32,11 +33,19 @@ module.exports = {
       },
       fontFamily: {
         'text': ['Inter', 'ui-sans-serif'],
+        'logo': ['Nasalization', 'ui-sans-serif']
       },
       backgroundImage: {
         signIllustration: "url('../../assets/images/bg.png')",
         stars: "url('../../assets/images/stars.gif')",
+        footer: "url('../../assets/images/moon.jpg')"
       },
+      rotate: {
+        'logo': '10deg',
+      },
+      borderRadius: {
+        '1/2': "2000px",
+      }
     },
   },
   plugins: [],

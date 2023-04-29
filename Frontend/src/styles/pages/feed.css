@@ -7,6 +7,7 @@
   --image-unit-size: 10px;
   --light-color: #DE30B7;
   --dark-color: #6A1056;
+  --footer-gradient: linear-gradient(rgba(222, 48, 183, .8) -20%, rgba(106, 16, 86, .9) 40%);
   --gradient-deg: 90deg;
   --gradient: linear-gradient(var(--gradient-deg), var(--light-color), var(--dark-color) 100%);
 }
@@ -47,4 +48,45 @@ html body #root .page-container {
 ::placeholder {
   color: #ccc;
   opacity: 1;
+}
+
+#feed {
+  height: -moz-fit-content;
+  height: fit-content;
+  width: 100%;
+}
+
+#footer {
+  overflow: hidden;
+}
+#footer ::-moz-placeholder {
+  color: #eee;
+  opacity: 1;
+}
+#footer ::placeholder {
+  color: #eee;
+  opacity: 1;
+}
+#footer .logo {
+  font-family: "Nasalization";
+}
+#footer #footer-bg {
+  box-shadow: 0 0 45px var(--light-color);
+  height: max(100vh, 100vw);
+  width: max(100vh, 100vw);
+  border-radius: 50%;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  background-image: var(--footer-gradient), url("../../assets/images/moon.jpg");
+}
+
+@font-face {
+  font-family: "Nasalization";
+  src: url("../../assets/fonts/nasalization.ttf");
+}
+.logo {
+  font-family: "Nasalization";
 }/*# sourceMappingURL=feed.css.map */

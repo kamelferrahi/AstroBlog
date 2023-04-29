@@ -1,5 +1,6 @@
 @import "../utils.scss";
 @include default_page_style();
+@include include_font();
 
 #spans {
     span {

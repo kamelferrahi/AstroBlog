@@ -4,6 +4,41 @@ $font-illustation-family: 'Poppins';
 $font-familly: 'Inter';
 $padding: 20px;
 
+@mixin include_font {
+    @font-face {
+        font-family: 'Nasalization';
+        src: url("../../assets/fonts/nasalization.ttf");
+    }
+
+    .logo {
+        font-family: 'Nasalization';
+    }
+}
+
+@mixin footer {
+    #footer {
+        overflow: hidden;
+
+        ::placeholder {
+            color: #eee;
+            opacity: 1;
+        }
+
+        #footer-bg {
+            box-shadow: 0 0 45px var(--light-color);
+            height: max(100vh, 100vw);
+            width: max(100vh, 100vw);
+            border-radius: 50%;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            right: 0;
+            z-index: -1;
+            background-image: var(--footer-gradient), url("../../assets/images/moon.jpg");
+        }
+    }
+}
+
 @mixin default_page_style {
     @tailwind base;
     @tailwind components;
@@ -14,6 +49,7 @@ $padding: 20px;
         --image-unit-size: 10px;
         --light-color: #DE30B7;
         --dark-color: #6A1056;
+        --footer-gradient: linear-gradient(rgba(222, 48, 183, .8) -20%, rgba(106, 16, 86, .9) 40%);
         --gradient-deg: 90deg;
         --gradient: linear-gradient(var(--gradient-deg), var(--light-color), var(--dark-color) 100%);
     }
