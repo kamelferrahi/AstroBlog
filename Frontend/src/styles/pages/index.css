@@ -40,6 +40,14 @@ html body #root .page-container {
   width: 100%;
 }
 
+@font-face {
+  font-family: "Nasalization";
+  src: url("../../assets/fonts/nasalization.ttf");
+}
+.logo {
+  font-family: "Nasalization";
+}
+
 #spans span {
   font-family: "Poppins";
   color: transparent;
