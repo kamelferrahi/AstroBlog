@@ -42,18 +42,44 @@ html body #root .page-container {
   width: 100%;
 }
 
+::-moz-placeholder {
+  color: #ccc;
+  opacity: 1;
+}
+
+::placeholder {
+  color: #ccc;
+  opacity: 1;
+}
+
+#footer {
+  overflow: hidden;
+}
+#footer ::-moz-placeholder {
+  color: #eee;
+  opacity: 1;
+}
+#footer ::placeholder {
+  color: #eee;
+  opacity: 1;
+}
+#footer #footer-bg {
+  box-shadow: 0 0 45px var(--light-color);
+  height: max(100vh, 100vw);
+  width: max(100vh, 100vw);
+  border-radius: 50%;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  background-image: var(--footer-gradient), url("../../assets/images/moon.jpg");
+}
+
 @font-face {
   font-family: "Nasalization";
   src: url("../../assets/fonts/nasalization.ttf");
 }
 .logo {
   font-family: "Nasalization";
-}
-
-#spans span {
-  font-family: "Poppins";
-  color: transparent;
-  line-height: 7rem;
-  -webkit-text-stroke: 1px;
-  -webkit-text-stroke-color: rgba(255, 255, 255, 0.6);
-}/*# sourceMappingURL=index.css.map */
+}/*# sourceMappingURL=settings.css.map */

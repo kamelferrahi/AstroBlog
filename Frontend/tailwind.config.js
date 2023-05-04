@@ -22,6 +22,7 @@ module.exports = {
         'subtitle': '#727272',
         'description': '#C2C2C2',
         'textarea': '#ffffff34',
+        'load-more': '#ffffff20',
       },
       fontSize: {
         '5xl': '9rem',
