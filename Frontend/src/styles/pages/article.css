@@ -37,6 +37,15 @@ html body #root {
   margin: 0;
   padding: 0;
 }
+html body #root .markdown > * {
+  all: revert;
+}
+html body #root .markdown > * img {
+  max-height: 400px;
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
 html body #root .page-container {
   height: 100%;
   width: 100%;
@@ -82,4 +91,63 @@ html body #root .page-container {
 }
 .logo {
   font-family: "Nasalization";
-}/*# sourceMappingURL=settings.css.map */
+}
+
+.toggle-switch {
+  position: relative;
+  width: 200px;
+  transform: scale(0.3);
+}
+.toggle-switch label {
+  position: absolute;
+  width: 100%;
+  height: 100px;
+  background-color: var(--dark);
+  border-radius: 50px;
+  cursor: pointer;
+}
+.toggle-switch input {
+  position: absolute;
+  display: none;
+}
+.toggle-switch .slider {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  transition: 0.3s;
+}
+.toggle-switch .checked ~ .slider {
+  background-color: var(--light);
+}
+.toggle-switch .slider::before {
+  content: "";
+  position: absolute;
+  top: 13px;
+  left: 16px;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  box-shadow: inset 28px -4px 0px 0px var(--light);
+  background-color: var(--dark);
+  transition: 0.3s;
+}
+.toggle-switch .checked ~ .slider::before {
+  transform: translateX(95px);
+  background-color: var(--dark);
+  box-shadow: none;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  background: #ffffff;
+  height: 5px;
+  border-radius: 10px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+}/*# sourceMappingURL=article.css.map */

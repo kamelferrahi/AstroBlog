@@ -3,7 +3,7 @@ import logo from "../assets/logo.svg";
 import bellIcon from "../assets/icons/bell-ring.png";
 import profileImg from "../assets/images/profile.jpg";
 
-class SettingsNavBar extends React.Component {
+class NavBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -27,7 +27,7 @@ class SettingsNavBar extends React.Component {
             <div className="flex flex-row items-center justify-between gap-4 py-10 px-20">
                 <div className="flex flex-col items-center justify-center">
                     <img src={logo} alt="logo" className="h-12 w-12 -rotate-logo" />
-                    <span className="font-semibold text-sm text-white">Astrotech</span>
+                    <span className="logo font-semibold text-sm text-white">Astrotech</span>
                 </div>
                 <div className="flex items-center gap-8">
                     <div className="relative cursor-pointer">
@@ -46,4 +46,4 @@ class SettingsNavBar extends React.Component {
 
 }
 
-export default SettingsNavBar;
+export default NavBar;

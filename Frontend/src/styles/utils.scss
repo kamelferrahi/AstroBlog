@@ -52,6 +52,8 @@ $padding: 20px;
         --footer-gradient: linear-gradient(rgba(222, 48, 183, .8) -20%, rgba(106, 16, 86, .9) 40%);
         --gradient-deg: 90deg;
         --gradient: linear-gradient(var(--gradient-deg), var(--light-color), var(--dark-color) 100%);
+        --light: #d8dbe0;
+        --dark: #28292c;
     }
 
     html {
@@ -77,6 +79,16 @@ $padding: 20px;
                 height: 100%;
                 margin: 0;
                 padding: 0;
+
+                .markdown>* {
+                    all: revert;
+
+                    img {
+                        max-height: 400px;
+                        width: 100%;
+                        object-fit: contain;
+                    }
+                }
 
                 .page-container {
                     height: 100%;

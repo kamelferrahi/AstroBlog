@@ -126,7 +126,7 @@ class Feed extends React.Component {
                     <div>
                         {this.createArticleCards()}
                     </div>
-                    <button className="mt-8 flex flex-row items-center justify-center gap-4 border-2 px-4 py-2 rounded-md border-feed-border">
+                    <button className="mt-8 flex flex-row items-center justify-center gap-4 border-2 px-4 py-2 rounded-md border-feed-border bg-load-more">
                         <img className="h-4 w-4 opacity-70" src={loadMoreImg} alt="load more" />
                         <span className="text-description font-semibold">Load more..</span>
                     </button>
