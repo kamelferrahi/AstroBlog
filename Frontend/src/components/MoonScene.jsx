@@ -4,7 +4,7 @@ import my_3d_model from "../assets/3d_model/moon.glb";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-const MoonScene = () => {
+function MoonScene() {
     const canvasRef = useRef();
     const moon_color = 0x730B6F;
 
@@ -32,7 +32,7 @@ const MoonScene = () => {
         });
         function animate() {
             requestAnimationFrame(animate);
-            if (obj !== undefined) obj.rotateY(0.002);
+            if (obj !== undefined) obj.rotateY(0.01);
             renderer.render(scene, camera);
         }
         setTimeout(() => {
