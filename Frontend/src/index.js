@@ -5,12 +5,13 @@ import Signup from './pages/signup';
 import Home from './pages/home';
 import Settings from './pages/settings';
 import Article from './pages/article';
+import E404 from "./pages/E404";
 
 import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/login',
     element: <Login />,
   },
   {
@@ -24,8 +25,16 @@ const router = createBrowserRouter([
     path: '/settings',
     element: <Settings />
   }, {
-    path: '/article',
+    path: '/article/:articleId',
     element: <Article />
+  },
+  , {
+    path: '/E404',
+    element: <E404 />
+  },
+  {
+    path: "/*",
+    element: <E404 />
   }
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));

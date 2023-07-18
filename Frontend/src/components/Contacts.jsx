@@ -1,80 +1,77 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import suggestionsIcon from "../assets/icons/link.png";
 import communityImg from "../assets/images/community.jpg";
 import communitiesIcon from "../assets/icons/group.png";
 
-class Contacts extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            suggestions: [
-                {
-                    img: communityImg,
-                    name: "IoT community",
-                    followers: "2k",
-                    likes: "4.5M"
-                },
-                {
-                    img: communityImg,
-                    name: "IoT community",
-                    followers: "2k",
-                    likes: "4.5M"
-                },
-                {
-                    img: communityImg,
-                    name: "IoT community",
-                    followers: "2k",
-                    likes: "4.5M"
-                },
-                {
-                    img: communityImg,
-                    name: "IoT community",
-                    followers: "2k",
-                    likes: "4.5M"
-                },
-                {
-                    img: communityImg,
-                    name: "IoT community",
-                    followers: "2k",
-                    likes: "4.5M"
-                }
-            ],
-            my_communities: [
-                {
-                    img: communityImg,
-                    name: "IoT community",
-                    followers: "2k",
-                    likes: "4.5M"
-                },
-                {
-                    img: communityImg,
-                    name: "IoT community",
-                    followers: "2k",
-                    likes: "4.5M"
-                },
-                {
-                    img: communityImg,
-                    name: "IoT community",
-                    followers: "2k",
-                    likes: "4.5M"
-                },
-                {
-                    img: communityImg,
-                    name: "IoT community",
-                    followers: "2k",
-                    likes: "4.5M"
-                },
-                {
-                    img: communityImg,
-                    name: "IoT community",
-                    followers: "2k",
-                    likes: "4.5M"
-                }
-            ],
+function Contacts() {
+    const [suggestions, setSuggestions] = useState([
+        {
+            img: communityImg,
+            name: "IoT community",
+            followers: "2k",
+            likes: "4.5M"
+        },
+        {
+            img: communityImg,
+            name: "IoT community",
+            followers: "2k",
+            likes: "4.5M"
+        },
+        {
+            img: communityImg,
+            name: "IoT community",
+            followers: "2k",
+            likes: "4.5M"
+        },
+        {
+            img: communityImg,
+            name: "IoT community",
+            followers: "2k",
+            likes: "4.5M"
+        },
+        {
+            img: communityImg,
+            name: "IoT community",
+            followers: "2k",
+            likes: "4.5M"
         }
-    }
-    createSuggestions() {
-        return this.state.suggestions.map(function (community) {
+    ]
+    );
+    const [my_communities, setMyCommunities] = useState([
+        {
+            img: communityImg,
+            name: "IoT community",
+            followers: "2k",
+            likes: "4.5M"
+        },
+        {
+            img: communityImg,
+            name: "IoT community",
+            followers: "2k",
+            likes: "4.5M"
+        },
+        {
+            img: communityImg,
+            name: "IoT community",
+            followers: "2k",
+            likes: "4.5M"
+        },
+        {
+            img: communityImg,
+            name: "IoT community",
+            followers: "2k",
+            likes: "4.5M"
+        },
+        {
+            img: communityImg,
+            name: "IoT community",
+            followers: "2k",
+            likes: "4.5M"
+        }
+    ],);
+
+    const createSuggestions = () => {
+        return suggestions.map(function (community) {
             return <div className="flex flex-row items-center justify-between my-4 gap-2">
                 <div className="flex flex-row items-center justify-start gap-2 cursor-pointer">
                     <img src={community.img} alt="community" className="h-[40px] w-[40px] rounded-[20px]" />
@@ -87,8 +84,8 @@ class Contacts extends React.Component {
             </div>;
         });
     }
-    createMyCommunities() {
-        return this.state.my_communities.map(function (community) {
+    const createMyCommunities = () => {
+        return my_communities.map(function (community) {
             return <div className="flex flex-row items-center justify-start my-4 gap-2">
                 <img src={community.img} alt="community" className="h-[40px] w-[40px] rounded-[20px]" />
                 <div className="block cursor-pointer">
@@ -98,30 +95,28 @@ class Contacts extends React.Component {
             </div>;
         });
     }
-    render() {
-        return (
-            <div className="sticky top-4">
-                <div className="mt-16">
-                    <div className="flex flex-row justify-start items-center gap-2 mb-4">
-                        <img src={suggestionsIcon} alt="suggestions" className="h-[20px] w-[20px]" />
-                        <h4 className="text-white font-semibold">Suggestions for me</h4>
-                    </div>
-                    <div>
-                        {this.createSuggestions()}
-                    </div>
+    return (
+        <div className="sticky top-4">
+            <div className="mt-16">
+                <div className="flex flex-row justify-start items-center gap-2 mb-4">
+                    <img src={suggestionsIcon} alt="suggestions" className="h-[20px] w-[20px]" />
+                    <h4 className="text-white font-semibold">Suggestions for me</h4>
                 </div>
-                <div className="mt-8">
-                    <div className="flex flex-row justify-start items-center gap-2 mb-4">
-                        <img src={communitiesIcon} alt="suggestions" className="h-[20px] w-[20px]" />
-                        <h4 className="text-white font-semibold">My communities</h4>
-                    </div>
-                    <div>
-                        {this.createMyCommunities()}
-                    </div>
+                <div>
+                    {createSuggestions()}
                 </div>
             </div>
-        );
-    }
+            <div className="mt-8">
+                <div className="flex flex-row justify-start items-center gap-2 mb-4">
+                    <img src={communitiesIcon} alt="suggestions" className="h-[20px] w-[20px]" />
+                    <h4 className="text-white font-semibold">My communities</h4>
+                </div>
+                <div>
+                    {createMyCommunities()}
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default Contacts;
