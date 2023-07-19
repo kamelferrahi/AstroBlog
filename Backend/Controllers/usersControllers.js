@@ -32,4 +32,9 @@ async function addNewUser(user) {
     return result;
 }
 
-module.exports = { addNewUser, emailExists };
+async function getPassword(email) {
+    const [rows] = await pool.query("SELECT user_password as password from user where email = ?", [email]);
+    return rows[0];
+}
+
+module.exports = { addNewUser, emailExists, getPassword };

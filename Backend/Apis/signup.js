@@ -7,11 +7,12 @@ router.route("/")
     .post(checkNewUser, async (req, res, next) => {
         const user = req.body;
         const result = await addNewUser(user);
-        console.log(result);
         if (result.length > 0) {
+            // add entry in log file
             res.status(201).send("success");
             next();
         } else {
+            // add entry in errors log file
             res.status(401).send("Element insert failed!");
         }
     });
