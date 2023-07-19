@@ -17,7 +17,7 @@ function LoginForm() {
                 <span className='block font-semibold text-grey mt-4'>Login to your account</span>
                 <form action="." method="post" className='my-8 flex flex-col justify-center items-center w-full'>
                     <div className='p-4 border border-boder-grey rounded-md bg-input-light-grey w-3/4 flex flex-row items-center justify-between mb-4'>
-                        <input type="text" name="username" placeholder='username or email' className='inline outline-0 bg-transparent font-text text-sm w-5/6' />
+                        <input type="text" name="email" placeholder='email' className='inline outline-0 bg-transparent font-text text-sm w-5/6' />
                         <img src={userIcon} alt="user" className='inline h-4 w-4' />
                     </div>
                     <div className='p-4 border border-boder-grey rounded-md bg-input-light-grey w-3/4 flex flex-row items-center justify-between mb-1'>
@@ -25,7 +25,7 @@ function LoginForm() {
                         <img src={passwordIcon} alt="password" className='inline h-4 w-4' />
                     </div>
                     <div className='w-3/4 text-xs text-errors mb-4'>
-                        Password or username is wrong!
+                        Password or email is wrong!
                     </div>
                     <div className='flex flex-row items-center justify-between w-3/4 mb-16'>
                         <div className='flex flex-row items-center justify-start gap-2'>
@@ -43,7 +43,7 @@ function LoginForm() {
             </div>
             <div className='flex flex-row items-center justify-center w-full gap-2 pb-4'>
                 <span className='text-light-text text-sm'>Don’t have an account yet?</span>
-                <Link to="/signup" className='text-light-pink text-sm pb-[1px] border-b border-light-pink'>Sign up</Link>
+                <Link to="/register" className='text-light-pink text-sm pb-[1px] border-b border-light-pink'>Sign up</Link>
             </div>
         </div>
     );
