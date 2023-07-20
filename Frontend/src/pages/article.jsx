@@ -22,15 +22,23 @@ function Article() {
 
     useEffect(() => {
         const fetchArticle = async () => {
-            const result = await fetch(`http://localhost:5000/articles/${articleId}`);
-            if (result.status === 404 || result.status === 400) {
+            var result = await fetch(`http://localhost:5000/articles/${articleId}`, { credentials: "include" });
+            if (result.status === 404) {
                 navigate("/E404");
-            } else {
-                result.json().then(json => {
-                    setArticle(json);
-                    document.title = json.title;
-                })
             }
+            if (result.status === 401 || result.status === 403) {
+                const data = await fetch("http://localhost:5000/refresh", { credentials: "include" });
+                if (data.status === 401 || data.status === 403) {
+                    navigate("/login");
+                } else {
+                    result = await fetch("http://localhost:5000/articles", { credentials: "include" });
+                    if (result.status !== 200) navigate("/login");
+                }
+            }
+            result.json().then(json => {
+                setArticle(json);
+                document.title = json.title;
+            })
         };
         fetchArticle();
     }, []);

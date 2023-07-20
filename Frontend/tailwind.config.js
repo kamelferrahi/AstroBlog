@@ -26,7 +26,7 @@ module.exports = {
       },
       fontSize: {
         '5xl': '9rem',
-        'big-title': '32px',
+        'big-title': '26px',
         'small-subtitle': '14px',
         'mini-text': '12px',
         'smallest-text': '11px',

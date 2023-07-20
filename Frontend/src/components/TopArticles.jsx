@@ -36,7 +36,7 @@ function TopArticles() {
     return (
         <div className="px-20 py-8">
             <div className="pb-4 border-b-2 border-feed-border flex flex-row justify-start items-center gap-4">
-                <img src={topArticlesIcon} alt="top articles" className="h-7 w-7" />
+                <img src={topArticlesIcon} alt="top articles" className="h-5 w-5" />
                 <h2 className="font-semibold text-big-title text-white">Top Articles</h2>
             </div>
             <div className="grid grid-cols-2 grid-rows-2 gap-10 mt-6">

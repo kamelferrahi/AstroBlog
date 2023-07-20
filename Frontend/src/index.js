@@ -11,11 +11,15 @@ import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
 
 const router = createBrowserRouter([
   {
-    path: '/login',
+    path: '/',
     element: <Login />,
   },
   {
-    path: '/signup',
+    path: '/login',
+    element: <Login />
+  },
+  {
+    path: '/register',
     element: <Signup />
   },
   {

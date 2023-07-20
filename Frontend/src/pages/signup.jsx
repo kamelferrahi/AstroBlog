@@ -9,7 +9,7 @@ function Signup() {
       <SignupForm />
       <div className="h-full w-1/2 flex flex-col justify-center items-center bg-black p-5 bg-signIllustration fixed right-0">
         <div id="illustration" className='flex flex-col justify-center items-center w-1/2 h-full absolute z-10'>
-          <MoonScene />
+          {/* <MoonScene /> */}
         </div>
         <div id='spans'>
           <span className='text-5xl font-bold block'>ASTRO</span>

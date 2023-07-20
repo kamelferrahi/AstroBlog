@@ -37,6 +37,15 @@ html body #root {
   margin: 0;
   padding: 0;
 }
+html body #root .markdown > * {
+  all: revert;
+}
+html body #root .markdown > * img {
+  max-height: 400px;
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
 html body #root .page-container {
   height: 100%;
   width: 100%;
@@ -74,6 +83,7 @@ html body #root .page-container {
   right: 0;
   z-index: -1;
   background-image: var(--footer-gradient), url("../../assets/images/moon.jpg");
+  background-size: cover;
 }
 
 @font-face {

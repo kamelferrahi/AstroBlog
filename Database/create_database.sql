@@ -3,13 +3,16 @@ USE astroblog_db;
 
 CREATE TABLE IF NOT EXISTS USER(
     id int primary key AUTO_INCREMENT,
-    email varchar(50),
-    username varchar(50) not null,
+    email varchar(50) not null,
     fullname varchar(50) not null,
     nb_publications int not null default 0,
     nb_likes int not null default 0,
     is_admin bool not null,
-    profile_pic varchar(200) not null
+    profile_pic varchar(200) not null default "https://images.unsplash.com/photo-1645536908932-652fbd998029?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTM2fHxhc3Ryb25hdXR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60",
+    category varchar(15) not null,
+    details varchar(100),
+    user_password varchar(100) not null,
+    refresh_token varchar(255)
 );
 
 CREATE TABLE IF NOT EXISTS COMMUNITY(

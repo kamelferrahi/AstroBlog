@@ -4,9 +4,10 @@ import filterIcon from "../assets/icons/filter.png";
 import searchIcon from "../assets/icons/search.png";
 import bellIcon from "../assets/icons/bell-ring.png";
 import profileImg from "../assets/images/profile.jpg";
+import { useNavigate } from "react-router-dom";
 
 function FeedNavBar() {
-
+    const navigate = useNavigate();
     const [notifications, setNotifications] = useState(["hello world"]);
     const [profile, setProfile] = useState({
         img: profileImg,
@@ -17,6 +18,14 @@ function FeedNavBar() {
             return <div></div>;
         } else {
             return <div id="notifications" className="h-[10px] w-[10px] rounded-[10px] bg-light-pink absolute right-0 top-0"></div>;
+        }
+    }
+
+    const handleLogout = async () => {
+        console.log("clicked");
+        const res = await fetch("http://localhost:5000/logout", { credentials: "include" });
+        if (res === 200) {
+            navigate("/logout");
         }
     }
 
@@ -42,7 +51,7 @@ function FeedNavBar() {
                 <img src={bellIcon} alt="bell" className="h-6 w-6" />
                 {notify()}
             </div>
-            <div className="cursor-pointer">
+            <div onClick={handleLogout} className="cursor-pointer">
                 <img src={profile.img} alt="profile" className="rounded-[50px] h-[60px] w-[60px] object-cover" />
             </div>
         </div>
