@@ -10,19 +10,21 @@ function LoginForm() {
     const [inputs, setInputs] = useState();
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
-    const backendServer = "http://localhost:5000/login";
+    const url = "http://localhost:5000/login";
+
     const handleSubmit = (event) => {
         setErrors(null);
         event.preventDefault();
-        axios.post(backendServer, inputs)
-            .then(res => {
-                if (res.data.errors) {
-                    console.log(res.data.errors);
-                }
-                if (res.data == "success") {
-                    navigate("/home");
-                }
-            }).catch(err => { setErrors(err.response.data); });
+        axios.post(url, inputs, {
+            withCredentials: true,
+        }).then(res => {
+            if (res.data.errors) {
+                console.log(res.data.errors);
+            }
+            if (res.status === 200) {
+                navigate("/home");
+            }
+        }).catch(err => { setErrors(err.response.data); });
     }
     return (
         <div className="px-20 py-5 flex flex-col items-start justify-between">

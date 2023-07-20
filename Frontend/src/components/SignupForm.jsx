@@ -12,20 +12,21 @@ function SignupForm() {
     const [checkedTerms, setCheckedTerms] = useState(false);
     const [showWhoRU, setShowWhoRU] = useState(false);
     const [errors, setErrors] = useState();
-    const backendServer = "http://localhost:5000/register";
+    const url = "http://localhost:5000/register";
     const navigate = useNavigate();
     const handleSubmit = (event) => {
         setErrors({});
         event.preventDefault();
-        axios.post(backendServer, inputs)
-            .then(res => {
-                if (res.data.errors) {
-                    console.log(res.data.errors);
-                }
-                if (res.data == "success") {
-                    navigate("/home");
-                }
-            }).catch(err => { setErrors(err.response.data); });
+        axios.post(url, inputs, {
+            withCredentials: true,
+        }).then(res => {
+            if (res.data.errors) {
+                console.log(res.data.errors);
+            }
+            if (res.status === 200) {
+                navigate("/home");
+            }
+        }).catch(err => { setErrors(err.response.data); });
     }
     return (
         <div className="px-20 py-5 flex flex-col items-start justify-between">
@@ -64,7 +65,7 @@ function SignupForm() {
                         {errors.about}
                     </div>}
                     {showWhoRU ? <div className='p-4 border border-boder-grey rounded-md bg-input-light-grey w-3/4 flex flex-row items-center justify-between mt-4'>
-                        <input type="text" name="other" placeholder='Who exactly?' className='inline outline-0 bg-transparent font-text text-sm w-full' />
+                        <input type="text" name="other" placeholder='Who exactly?' onChange={(e) => { setInputs({ ...inputs, other: e.target.value }) }} className='inline outline-0 bg-transparent font-text text-sm w-full' />
                     </div> : <></>}
                     {showWhoRU && errors && errors.other && <div className='w-3/4 text-xs text-errors mt-1'>
                         {errors.other}

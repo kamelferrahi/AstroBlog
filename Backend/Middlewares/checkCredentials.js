@@ -7,8 +7,8 @@ const checkCredentials = async (req, res, next) => {
         res.status(403).send("Password or email is empty!");
     } else {
         const email = req.body.email;
-        if (emailExists(email)) {
-            const password = req.body.password;
+        const password = req.body.password;
+        if (await emailExists(email)) {
             const result = await getPassword(email);
             bcrypt.compare(password, result.password, (err, r) => {
                 if (r) {

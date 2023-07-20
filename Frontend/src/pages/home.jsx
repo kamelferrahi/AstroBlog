@@ -7,14 +7,25 @@ import Contacts from "../components/Contacts";
 import Feed from "../components/Feed";
 import Footer from "../components/Footer";
 import "../styles/pages/feed.css";
+import { useNavigate } from "react-router-dom";
 
 
 function Home() {
     const [articles, setArticles] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchArticles = async () => {
-            const result = await fetch("http://localhost:5000/articles");
+            var result = await fetch("http://localhost:5000/articles", { credentials: "include" });
+            if (result.status === 401 || result.status === 403) {
+                const data = await fetch("http://localhost:5000/refresh", { credentials: "include" });
+                if (data.status === 401 || data.status === 403) {
+                    navigate("/login");
+                } else {
+                    result = await fetch("http://localhost:5000/articles", { credentials: "include" });
+                    if (result.status !== 200) navigate("/login");
+                }
+            }
             result.json().then(json => {
                 setArticles(json);
             })
@@ -31,7 +42,8 @@ function Home() {
                         <FeedNavBar />
                         <TopArticles />
                         <div className="px-20 grid grid-cols-8 grid-rows-1 gap-8 mt-4 mb-16">
-                            <Banners />
+                            {/* <Banners /> */}
+                            <div></div>
                             <Feed articles={articles} />
                             <div className=" col-span-2 h-full w-full relative">
                                 <Contacts />

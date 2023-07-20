@@ -1,6 +1,7 @@
 const express = require("express");
 const { getAllArticles, getArticleWithContent } = require("../Controllers/articlesController");
 const checkArticleExistance = require("../Middlewares/checkArticleExistance");
+
 const router = express.Router();
 
 router.route("/")

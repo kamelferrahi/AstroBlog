@@ -12,8 +12,11 @@ const checkNewUser = async (req, res, next) => {
     }
     if (!req.body.about) {
         errors["about"] = "You have to choose!";
-    } else if (req.body.about.startsWith("other") && (!req.body.other || req.body.other.length < 5)) {
-        errors["other"] = "You have to fill this box correctly!";
+    } else {
+        if (req.body.about.startsWith("other") && (!req.body.other || req.body.other.length < 5)) {
+            console.log(req.body)
+            errors["other"] = "You have to fill this box correctly!";
+        }
     }
     const regex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/);
     const password = req.body.password;

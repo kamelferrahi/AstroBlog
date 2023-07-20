@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { checkNewUser } = require("../Middlewares/checkNewUser");
-const { addNewUser } = require("../Controllers/usersControllers");
+const { addNewUser, getUserId, setRefreshToken } = require("../Controllers/usersControllers");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 router.route("/")
     .post(checkNewUser, async (req, res, next) => {
@@ -9,11 +11,25 @@ router.route("/")
         const result = await addNewUser(user);
         if (result.length > 0) {
             // add entry in log file
-            res.status(201).send("success");
+            const tmp = await getUserId(user.email);
+            const userId = tmp.id;
+            const accessToken = jwt.sign(
+                { "userId": userId },
+                process.env.ACCESS_TOKEN_SECRET,
+                { expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME }
+            );
+            const refreshToken = jwt.sign(
+                { "userId": userId },
+                process.env.REFRESH_TOKEN_SECRET,
+                { expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME }
+            );
+            await setRefreshToken(userId, refreshToken);
+            res.cookie('jwt', refreshToken, { httpOnly: true, expires: new Date(Date.now() + parseInt(process.env.REFRESH_TOKEN_EXPIRE_TIME_IN_MS)) });
+            res.send({ accessToken });
             next();
         } else {
             // add entry in errors log file
-            res.status(401).send("Element insert failed!");
+            res.sendStatus(401);
         }
     });
 

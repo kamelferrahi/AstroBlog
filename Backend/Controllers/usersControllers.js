@@ -37,4 +37,22 @@ async function getPassword(email) {
     return rows[0];
 }
 
-module.exports = { addNewUser, emailExists, getPassword };
+async function getUserId(email) {
+    const [rows] = await pool.query("SELECT id from user where email = ?", [email]);
+    return rows[0];
+}
+
+async function setRefreshToken(id, token) {
+    const res = await pool.query("UPDATE user SET refresh_token = ? where id = ?", [token, id]);
+    return res;
+}
+
+async function refreshTokenExists(token) {
+    const [res] = await pool.query("SELECT id from user where refresh_token = ?", [token]);
+    return res.length > 0;
+}
+
+async function updateRefreshToken(id) {
+    const res = await pool.query("update user set refresh_token = ? where refresh_token = ", ["", id]);
+}
+module.exports = { addNewUser, emailExists, getPassword, getUserId, setRefreshToken, refreshTokenExists, updateRefreshToken };
