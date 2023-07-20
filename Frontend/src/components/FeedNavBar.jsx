@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import logo from "../assets/logo.svg";
 import filterIcon from "../assets/icons/filter.png";
 import searchIcon from "../assets/icons/search.png";
 import bellIcon from "../assets/icons/bell-ring.png";
-import profileImg from "../assets/images/profile.jpg";
 import { useNavigate } from "react-router-dom";
+import Notifications from "./Notifications";
 
-function FeedNavBar() {
+function FeedNavBar({ profile }) {
     const navigate = useNavigate();
-    const [notifications, setNotifications] = useState(["hello world"]);
-    const [profile, setProfile] = useState({
-        img: profileImg,
-    });
+    const [notifications, setNotifications] = useState([{ id: 1, img: "https://images.unsplash.com/photo-1464802686167-b939a6910659?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1450&q=80", message: "Yacine has posted new article", date: new Date(Date.now()) },]);
+    const [showNotification, setShowNotification] = useState(false);
+    const handleBellClick = () => { setShowNotification(prev => !prev); }
 
     const notify = () => {
         if (notifications.length === 0) {
@@ -47,10 +46,11 @@ function FeedNavBar() {
                 </form>
             </div>
             <div className="relative cursor-pointer">
-                <img src={bellIcon} alt="bell" className="h-6 w-6" />
+                <img src={bellIcon} alt="bell" className="h-6 w-6" onClick={handleBellClick} />
                 {notify()}
+                {showNotification && <Notifications notifications={notifications} />}
             </div>
-            <div onClick={handleLogout} className="cursor-pointer">
+            <div onClick={handleLogout} className="cursor-pointer rounded-[50px] h-[60px] w-[60px]">
                 <img src={profile.img} alt="profile" className="rounded-[50px] h-[60px] w-[60px] object-cover" />
             </div>
         </div>

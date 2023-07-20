@@ -10,6 +10,7 @@ const verifyJWT = require("./Middlewares/checkJWT");
 const cookieParser = require("cookie-parser");
 const refresh = require("./Apis/refresh");
 const logout = require("./Apis/logout");
+const user = require("./Apis/user");
 
 
 env.config();
@@ -34,6 +35,7 @@ app.use("/articles", articles);
 app.use("/comments", comments);
 app.use("/communities", communities);
 app.use("/logout", logout);
+app.use("/user", user);
 
 app.get("/", (req, res) => {
     res.status(200).send("This is the route of the backend server");
