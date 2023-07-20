@@ -53,6 +53,7 @@ async function refreshTokenExists(token) {
 }
 
 async function updateRefreshToken(id) {
-    const res = await pool.query("update user set refresh_token = ? where refresh_token = ", ["", id]);
+    const [res] = await pool.query("update user set refresh_token = ? where id = ?", ["", id]);
+    return res;
 }
 module.exports = { addNewUser, emailExists, getPassword, getUserId, setRefreshToken, refreshTokenExists, updateRefreshToken };

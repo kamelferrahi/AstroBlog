@@ -22,10 +22,9 @@ function FeedNavBar() {
     }
 
     const handleLogout = async () => {
-        console.log("clicked");
         const res = await fetch("http://localhost:5000/logout", { credentials: "include" });
-        if (res === 200) {
-            navigate("/logout");
+        if (res.status === 200) {
+            navigate("/login");
         }
     }
 
