@@ -24,9 +24,9 @@ router.route("/")
                 { expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME }
             );
             await setRefreshToken(userId, refreshToken);
-            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: parseInt(process.env.REFRESH_TOKEN_EXPIRE_TIME_IN_MS), domain: "localhost" });
+            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: parseInt(process.env.REFRESH_TOKEN_EXPIRE_TIME_IN_MS) });
             res.cookie('token', accessToken, { httpOnly: true, maxAge: parseInt(process.env.ACCESS_TOKEN_EXPIRE_TIME_IN_MS) });
-            res.send({ accessToken });
+            res.status(200).send({ userId: userId });
             next();
         } else {
             // add entry in errors log file

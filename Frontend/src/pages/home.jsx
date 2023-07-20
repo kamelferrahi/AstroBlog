@@ -11,7 +11,9 @@ import { useNavigate } from "react-router-dom";
 
 
 function Home() {
-    const [articles, setArticles] = useState(null);
+    const [articles, setArticles] = useState([]);
+    const [profile, setProfile] = useState();
+    const [prevProfile, setPrevProfile] = useState();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,24 +24,39 @@ function Home() {
                 if (data.status === 401 || data.status === 403) {
                     navigate("/login");
                 } else {
-                    result = await fetch("http://localhost:5000/articles", { credentials: "include" });
-                    if (result.status !== 200) navigate("/login");
+                    navigate("/home");
+                }
+            } else {
+                if (result.status === 200) {
+                    result.json().then(json => {
+                        setArticles(json.articles);
+                        setProfile({ id: json.userId });
+                    });
+                } else {
+                    navigate("/E404");
                 }
             }
-            result.json().then(json => {
-                setArticles(json);
-            })
         };
         fetchArticles();
     }, []);
 
+
+    useEffect(() => {
+        const fetchProfile = (async () => {
+            setPrevProfile(profile);
+            const result = await fetch(`http://localhost:5000/user/${profile.id}`, { credentials: "include" });
+            result.json().then(data => setProfile(prevalue => prevalue = { ...prevalue, ...data }));
+        });
+        if (JSON.stringify(profile) != JSON.stringify(prevProfile)) fetchProfile();
+    }, [profile]);
+
     return (
         <>
-            {articles ?
+            {articles && profile?.fullname ?
                 <div id="feed" className="bg-gradient-to-b from-page-light-dark to-page-dark relative">
                     <AnimatedBg />
                     <div className="relative z-10">
-                        <FeedNavBar />
+                        <FeedNavBar profile={profile} />
                         <TopArticles />
                         <div className="px-20 grid grid-cols-8 grid-rows-1 gap-8 mt-4 mb-16">
                             {/* <Banners /> */}
