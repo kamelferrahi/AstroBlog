@@ -30,8 +30,15 @@ function Home() {
                 setArticles(json);
             })
         };
+    
         fetchArticles();
+    
     }, []);
+
+    
+
+    
+    
 
     return (
         <>
