@@ -10,9 +10,26 @@ const verifyJWT = require("./Middlewares/checkJWT");
 const cookieParser = require("cookie-parser");
 const refresh = require("./Apis/refresh");
 const logout = require("./Apis/logout");
+const home = require("./Apis/home")
+
+const { Client } = require('@elastic/elasticsearch');
 
 
 env.config();
+
+const user = process.env.ELASTICSEARCH_USERNAME
+const psw = process.env.ELASTICSEARCH_PASSWORD 
+
+const client = new Client({ node: 'https://localhost:9200',
+    auth: {
+        username: user,
+        password: psw
+    },
+    ssl: {
+        rejectUnauthorized: false,
+    }, 
+    tls: { rejectUnauthorized: false }});
+
 
 const app = express();
 const PORT = process.env.PORT;
@@ -34,6 +51,61 @@ app.use("/articles", articles);
 app.use("/comments", comments);
 app.use("/communities", communities);
 app.use("/logout", logout);
+app.use("/home",home)
+
+const indexName = process.env.ELASTICSEARCH_INDEX ;
+
+(async () => {
+  try {
+    await client.indices.create({
+      index: indexName,
+      body: {
+        mappings: {
+          properties: {
+            title: { type: 'text' },
+            content: { type: 'text' },
+          },
+        },
+      },
+    });
+    console.log(`Index "${indexName}" created.`);
+  } catch (error) {
+    console.error('Error creating the index: Already exist');
+  }
+})();
+
+
+async function run() {
+    await client.index({
+      index: indexName,
+      body: {
+        title: 'Ned Stark',
+        content: 'Winter is coming.'
+      }
+    })
+  
+    await client.index({
+      index: indexName,
+      body: {
+        title: 'Daenerys Targaryen',
+        content: 'I am the blood of the dragon.'
+      }
+    })
+  
+    await client.index({
+      index: indexName,
+      body: {
+        title: 'Bonjour tous le monde',
+        content: 'this is my description.'
+      }
+    })
+    
+    await client.indices.refresh({index: indexName})
+    console.log('ook')
+}
+  
+run().catch(console.log)
+
 
 app.get("/", (req, res) => {
     res.status(200).send("This is the route of the backend server");
@@ -43,3 +115,5 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
     console.log(`server has been started at port ${PORT}`);
 })
+
+module.exports = { client, indexName};
