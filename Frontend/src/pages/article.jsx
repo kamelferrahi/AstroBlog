@@ -71,7 +71,7 @@ function Article() {
     return (
         <>
             {
-                article ? <div className="bg-gradient-to-b from-page-light-dark to-page-dark relative text-white">
+                article ? <div className="bg-gradient-to-b from-page-light-dark to-page-dark relative text-white" key={article.id}>
                     <div className="relative z-10">
                         <div className="h-96 w-full">
                             <img src={article.img} alt="article" className="object-cover w-full h-full" />

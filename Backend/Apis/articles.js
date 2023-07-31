@@ -7,7 +7,7 @@ const router = express.Router();
 router.route("/")
     .get(async (req, res, next) => {
         const articles = await getAllArticles();
-        res.send(articles);
+        res.send({ articles: articles, userId: req.userId });
         next();
     });
 

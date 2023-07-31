@@ -13,16 +13,17 @@ const logout = require("./Apis/logout");
 const home = require("./Apis/home")
 
 const { Client } = require('@elastic/elasticsearch');
+const user = require("./Apis/user");
 
 
 env.config();
 
-const user = process.env.ELASTICSEARCH_USERNAME
+const userelastic = process.env.ELASTICSEARCH_USERNAME
 const psw = process.env.ELASTICSEARCH_PASSWORD 
 
 const client = new Client({ node: 'https://localhost:9200',
     auth: {
-        username: user,
+        username: userelastic,
         password: psw
     },
     ssl: {
@@ -106,6 +107,7 @@ async function run() {
   
 run().catch(console.log)
 
+app.use("/user", user);
 
 app.get("/", (req, res) => {
     res.status(200).send("This is the route of the backend server");

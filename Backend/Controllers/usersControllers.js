@@ -53,6 +53,13 @@ async function refreshTokenExists(token) {
 }
 
 async function updateRefreshToken(id) {
-    const res = await pool.query("update user set refresh_token = ? where refresh_token = ", ["", id]);
+    const [res] = await pool.query("update user set refresh_token = ? where id = ?", ["", id]);
+    return res;
 }
-module.exports = { addNewUser, emailExists, getPassword, getUserId, setRefreshToken, refreshTokenExists, updateRefreshToken };
+
+async function getUserProfile(id) {
+    const [res] = await pool.query("SELECT fullname , profile_pic as img from user where id = ?", [id]);
+    return res;
+}
+
+module.exports = { addNewUser, emailExists, getPassword, getUserId, setRefreshToken, refreshTokenExists, updateRefreshToken, getUserProfile };

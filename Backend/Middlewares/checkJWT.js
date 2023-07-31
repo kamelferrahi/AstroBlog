@@ -3,7 +3,7 @@ require("dotenv").config();
 
 
 const verifyJWT = async (req, res, next) => {
-    const token = req.cookies.token;
+    const token = await req.cookies.token;
     if (!token) {
         res.sendStatus(401);
     } else {
