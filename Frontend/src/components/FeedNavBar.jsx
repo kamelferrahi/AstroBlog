@@ -35,7 +35,7 @@ function FeedNavBar({ profile }) {
             </div>
             <div className="flex flex-row items-center justify-between border border-feed-border border-2 p-4 rounded-md w-5/6 gap-2">
                 <img src={searchIcon} alt="search" className="h-[20px] w-[20px] opacity-[.7]" />
-                <form action="." method="GET" className="flex flex-row items-center justify-between w-full gap-2">
+                <form className="flex flex-row items-center justify-between w-full gap-2">
                     <div className="w-full">
                         <input type="text" placeholder="Click to search ..." className="w-full outline-none border-none bg-transparent text-white" />
                     </div>

@@ -6,6 +6,7 @@ import Home from './pages/home';
 import Settings from './pages/settings';
 import Article from './pages/article';
 import E404 from "./pages/E404";
+import WriteArticle from "./pages/writeArticle";
 
 import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
 
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
     path: '/article/:articleId',
     element: <Article />
   },
+  {
+    path: '/write_article',
+    element: <WriteArticle />
+  }
   , {
     path: '/E404',
     element: <E404 />
