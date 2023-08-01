@@ -3,13 +3,14 @@ import ArticleCard from "./ArticleCard";
 import article from "../assets/icons/article.png";
 import feather from "../assets/icons/feather.png";
 import loadMoreImg from "../assets/icons/reload.png";
+import { useNavigate } from "react-router-dom";
 
 function createArticleCards(articles) {
     return articles.map(function (article) { return <ArticleCard infos={article} /> });
 }
 
 function Feed(props) {
-
+    const navigate = new useNavigate();
     return (
         <div className="col-span-5" >
             <div className="pb-4 border-b-2 border-feed-border flex flex-row justify-between items-center">
@@ -17,7 +18,7 @@ function Feed(props) {
                     <img src={article} alt="articles" className="h-5 w-5" />
                     <h2 className="font-semibold text-big-title text-white">Articles</h2>
                 </div>
-                <button className="flex flex-row items-center justify-center gap-2 border border-white py-2 px-4 rounded-md">
+                <button className="flex flex-row items-center justify-center gap-2 border border-white py-2 px-4 rounded-md" onClick={() => navigate("/write_article")}>
                     <img src={feather} alt="write" className="h-4 w-4" />
                     <span className="text-white font-medium text-base">write</span>
                 </button>
