@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS USER(
     nb_publications int not null default 0,
     nb_likes int not null default 0,
     is_admin bool not null,
-    profile_pic varchar(200) not null default "https://images.unsplash.com/photo-1645536908932-652fbd998029?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTM2fHxhc3Ryb25hdXR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60",
+    profile_pic varchar(200) not null default "https://cdn-icons-png.flaticon.com/256/149/149071.png",
     category varchar(15) not null,
     details varchar(100),
     user_password varchar(100) not null,
@@ -62,4 +62,20 @@ CREATE TABLE IF NOT EXISTS COMMENT(
     comment_text varchar(255) not null,
     foreign key (user) references user(id),
     foreign key (article) references article(id)
+);
+
+CREATE TABLE IF NOT EXISTS USER_LIKES_ARTICLE(
+    user int not null,
+    article int not null,
+    foreign key (user) references user(id),
+    foreign key (article) references article(id),
+    primary key (user , article)
+);
+
+CREATE TABLE IF NOT EXISTS USER_DISLIKES_ARTICLE(
+    user int not null,
+    article int not null,
+    foreign key (user) references user(id),
+    foreign key (article) references article(id),
+    primary key (user , article)
 );

@@ -1,5 +1,6 @@
 const mysql = require("mysql2");
 const env = require("dotenv");
+const { param } = require("../Apis/articles");
 env.config();
 
 const pool = mysql.createPool({
@@ -48,12 +49,83 @@ async function createArticle(article) {
     const cdate = new Date(Date.now());
     const fields = article.fields;
     const [row1] = await pool.query("INSERT into article (author , community , date_time, title , article_description , article_img , content) values (? , ? ,? ,? ,? , ? , ?) ", [article.author, article.community, cdate, article.title, article.article_description, article.article_img, article.content]);
-    let row3 = undefined;
+    let row2 = undefined;
     if (row1.affectedRows > 0 && fields && fields.length > 0) {
         const combo = fields.map(f => `('${f}',${row1.insertId})`);
-        [row3] = await pool.query("INSERT into field values " + combo.toString(), []);
+        [row2] = await pool.query("INSERT into field values " + combo.toString(), []);
     }
-    return row3 ? row3 : row1;
+    let row3 = undefined;
+    if (row2 && row2.affectedRows > 0) {
+        [row3] = await pool.query("UPDATE user set nb_publications = nb_publications + 1 where id = ?", [article.author]);
+    }
+    return row3 ? row3 : row2 ? row2 : row1;
 }
 
-module.exports = { getAllArticles, getArticle, getArticleWithContent, createArticle };
+async function updateLikes(id, user, params) {
+    let row1 = undefined;
+    if (params.action === "increase") {
+        [row1] = await pool.query("UPDATE article set nb_likes = nb_likes +1 where id =? ", [id]);
+    } else {
+        [row1] = await pool.query("UPDATE article set nb_likes = nb_likes -1 where id =? ", [id]);
+    }
+    let row2 = undefined;
+    if (row1 && row1.affectedRows > 0) {
+        if (params.action === "increase") {
+            [row2] = await pool.query("UPDATE user set nb_likes = nb_likes +1 where fullname =? ", [params.author]);
+        } else {
+            [row2] = await pool.query("UPDATE user set nb_likes = nb_likes -1 where fullname =? ", [params.author]);
+        }
+    }
+    let row3 = undefined;
+    if (row2 && row2.affectedRows > 0) {
+        if (params.action === "increase") {
+            [row3] = await pool.query("UPDATE community set nb_likes = nb_likes +1 where community_name = ?", [params.community]);
+        } else {
+            [row3] = await pool.query("UPDATE community set nb_likes = nb_likes -1 where community_name = ?", [params.community]);
+
+        }
+    }
+    let row4 = undefined;
+    if (row3 && row3.affectedRows > 0) {
+        if (params.action === "increase") {
+            [row4] = await pool.query("INSERT INTO user_likes_article (user , article) value (?,?)", [user, id]);
+        } else {
+            [row4] = await pool.query("DELETE from user_likes_article where article = ? and user = ?", [id, user])
+        }
+    }
+    return row4 ? row4 : row3 ? row3 : row2 ? row2 : row1;
+}
+
+async function getIfLikeArticle(id, user) {
+    const [row] = await pool.query("SELECT count(article) as nb from user_likes_article where article = ? and user = ?", [id, user]);
+    if (row && row[0]) return row[0]?.nb && row[0].nb == 1 ? true : false;
+    return row;
+}
+
+async function updateDislikes(id, user, params) {
+    let row1 = undefined;
+    if (params.action === "increase") {
+        [row1] = await pool.query("UPDATE article set nb_dislikes = nb_dislikes +1 where id =? ", [id]);
+    } else {
+        [row1] = await pool.query("UPDATE article set nb_dislikes = nb_dislikes -1 where id =? ", [id]);
+    }
+
+    let row4 = undefined;
+    if (row1 && row1.affectedRows > 0) {
+        if (params.action === "increase") {
+            [row4] = await pool.query("INSERT INTO user_dislikes_article (user , article) value (?,?)", [user, id]);
+        } else {
+            [row4] = await pool.query("DELETE from user_dislikes_article where article = ? and user = ?", [id, user])
+        }
+    }
+    return row4 ? row4 : row1;
+}
+
+
+async function getIfDislikeArticle(id, user) {
+    const [row] = await pool.query("SELECT article,user , count(article) as nb from user_dislikes_article where article = ? and user = ?", [id, user]);
+    if (row && row[0]) return row[0]?.nb && row[0].nb == 1 ? true : false;
+    return row;
+}
+
+module.exports = { getAllArticles, getArticle, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle };

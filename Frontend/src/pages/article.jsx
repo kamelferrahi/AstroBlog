@@ -5,16 +5,19 @@ import Footer from "../components/Footer";
 import Comments from "../components/Comments";
 import ReactMarkdown from "react-markdown";
 import "../styles/pages/article.css";
-import sendIcon from "../assets/icons/send.png";
-import likesIcon from "../assets/icons/like.png";
 import loadMoreImg from "../assets/icons/reload.png";
+import AddComment from "../components/AddComment";
+import commentsIcon from "../assets/icons/comment.png";
+import Reviews from "../components/Reviews";
 
 function Article() {
-
     const [theme, setTheme] = useState({ theme: "dark" });
     const [article, setArticle] = useState(null);
     const [comments, setComments] = useState(null);
     const [profile, setProfile] = useState();
+
+    document.title = article?.title ? article.title : "Astroblog";
+
     useEffect(() => {
         setProfile(JSON.parse(localStorage.getItem("userInfo")));
     }, []);
@@ -39,15 +42,14 @@ function Article() {
             }
             result.json().then(json => {
                 setArticle(json);
-                document.title = json.title;
-            })
+            });
         };
         fetchArticle();
     }, []);
 
     useEffect(() => {
         const fetchComments = async () => {
-            const result = await fetch(`http://localhost:5000/comments/${articleId}`);
+            const result = await fetch(`http://localhost:5000/comments/${articleId}`, { credentials: "include" });
             if (result.status === 404 || result.status === 400) {
                 navigate("/E404");
             } else {
@@ -65,6 +67,7 @@ function Article() {
         checkbox.classList.toggle("checked");
         if (checkbox.classList.contains("checked")) { setTheme({ theme: "light" }) } else { setTheme({ theme: "dark" }); };
     }
+
     const createFields = (article) => {
         return article.fields.map(function (field) { return <span className="border border-light-pink text-light-pink text-xs font-medium py-1 px-2 rounded-[10px] mr-2">{field}</span> });
     }
@@ -96,23 +99,15 @@ function Article() {
                                 </div>
                             </div>
                             <div className="translate-x-10">
-                                <div class='toggle-switch'>
+                                <div className='toggle-switch'>
                                     <label>
                                         <input type='checkbox' className="checked" onClick={event => switchTheme(event)} />
-                                        <span class='slider'></span>
+                                        <span className='slider'></span>
                                     </label>
                                 </div>
                             </div>
                         </div>
-                        <div className="px-20 flex flex-row justify-center items-center gap-2">
-                            <img src={profile.img} alt="profile" className="h-[30px] w-[30px] object-cover rounded-full" />
-                            <form action="">
-                                <div className="flex flex-row gap-2 justify-start items-center pb-2 border-b-2 border-feed-border w-[400px]">
-                                    <input type="text" placeholder="Add comment" className="bg-transparent border-none outline-none text-mini-text w-full" />
-                                    <button><img src={sendIcon} alt="send" className="h-[20px] w-[20px]" /></button>
-                                </div>
-                            </form>
-                        </div>
+                        <AddComment profile={profile} />
                         <div className="grid grid-cols-6 grid-rows-1 w-full mt-10 px-20 gap-4">
                             <div></div>
                             <div className="col-span-4">
@@ -125,26 +120,25 @@ function Article() {
                                 <div className="markdown">
                                     <ReactMarkdown>{article.content}</ReactMarkdown>
                                 </div>
-                                {comments && <>
-                                    <Comments comments={comments} />
-                                    <dir className="w-full flex justify-center items-center">
-                                        <button className="mt-8 flex flex-row items-center justify-center gap-4 border-2 px-4 py-2 rounded-md border-feed-border bg-load-more">
-                                            <img className="h-4 w-4 opacity-70" src={loadMoreImg} alt="load more" />
-                                            <span className="text-description font-semibold">Load more..</span>
-                                        </button>
-                                    </dir>
-                                </>}
-                            </div>
-                            <div className="flex flex-row items-start justify-center gap-4">
-                                <div className="flex flex-col justify-center items-center gap-2">
-                                    <img src={likesIcon} alt="dislike" className="rotate-180 h-[30px] w-[30px] opacity-75" />
-                                    <span className="text-description font-medium text-mini-text">{article.article_dislikes} dislikes</span>
+                                <div className="mt-12 mb-4">
+                                    <div className="border-b-2 border-feed-border pb-2 flex flex-row justify-start items-center gap-4">
+                                        <img src={commentsIcon} alt="comment" className="h-[25px] w-[25px] block" />
+                                        <span className="block text-white font-semibold text-card-title">Comments</span>
+                                    </div>
+                                    {comments && < Comments comments={comments} />}
                                 </div>
-                                <div className="flex flex-col justify-center items-center gap-2">
-                                    <img src={likesIcon} alt="like" className="h-[30px] w-[30px] opacity-75" />
-                                    <span className="text-description font-medium text-mini-text">{article.article_likes} likes</span>
-                                </div>
+                                {comments && comments.length > 3 &&
+                                    <>
+                                        <dir className="w-full flex justify-center items-center">
+                                            <button className="mt-8 flex flex-row items-center justify-center gap-4 border-2 px-4 py-2 rounded-md border-feed-border bg-load-more">
+                                                <img className="h-4 w-4 opacity-70" src={loadMoreImg} alt="load more" />
+                                                <span className="text-description font-semibold">Load more..</span>
+                                            </button>
+                                        </dir>
+                                    </>
+                                }
                             </div>
+                            <Reviews alikes={article.article_likes} adislikes={article.article_dislikes} articleId={articleId} author={article.user_name} community={article.community_name} />
                         </div>
                         <Footer></Footer>
                     </div>

@@ -1,7 +1,7 @@
 const express = require("express");
-const { getAllArticles, getArticleWithContent, createArticle } = require("../Controllers/articlesController");
+const { getAllArticles, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle } = require("../Controllers/articlesController");
 const checkArticleExistance = require("../Middlewares/checkArticleExistance");
-
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 router.route("/")
@@ -16,10 +16,107 @@ router.route("/")
             res.status(201);
             next();
         } else {
-            res.sendStatus(401);
+            res.sendStatus(400);
         }
     });
 
+router.route("/update_likes/:id")
+    .post(async (req, res, next) => {
+        const id = req.params.id;
+        const params = req.body;
+        const token = req.cookies.token;
+        jwt.verify(
+            token,
+            process.env.ACCESS_TOKEN_SECRET,
+            async (err, decoded) => {
+                if (err) {
+                    res.sendStatus(403);
+                } else {
+                    const user = decoded.userId;
+                    const result = await updateLikes(id, user, params);
+                    if (result.affectedRows > 0) {
+                        res.status(200);
+                        next();
+                    } else {
+                        res.sendStatus(400);
+                    }
+                }
+            }
+        );
+    });
+
+router.route("/update_dislikes/:id")
+    .post(async (req, res, next) => {
+        const id = req.params.id;
+        const params = req.body;
+        const token = req.cookies.token;
+        jwt.verify(
+            token,
+            process.env.ACCESS_TOKEN_SECRET,
+            async (err, decoded) => {
+                if (err) {
+                    res.sendStatus(403);
+                } else {
+                    const user = decoded.userId;
+                    const result = await updateDislikes(id, user, params);
+                    if (result.affectedRows > 0) {
+                        res.status(200);
+                        next();
+                    } else {
+                        res.sendStatus(400);
+                    }
+                }
+            }
+        );
+    });
+
+router.route("/likes/:id")
+    .get(async (req, res, next) => {
+        const id = req.params.id;
+        const token = req.cookies.token;
+        jwt.verify(
+            token,
+            process.env.ACCESS_TOKEN_SECRET,
+            async (err, decoded) => {
+                if (err) {
+                    res.sendStatus(403);
+                } else {
+                    const user = decoded.userId;
+                    const result = await getIfLikeArticle(id, user);
+                    if (result == true || result == false) {
+                        res.status(200).send({ isLiked: result });
+                        next();
+                    } else {
+                        res.sendStatus(400);
+                    }
+                }
+            }
+        );
+    });
+
+router.route("/dislikes/:id")
+    .get(async (req, res, next) => {
+        const id = req.params.id;
+        const token = req.cookies.token;
+        jwt.verify(
+            token,
+            process.env.ACCESS_TOKEN_SECRET,
+            async (err, decoded) => {
+                if (err) {
+                    res.sendStatus(403);
+                } else {
+                    const user = decoded.userId;
+                    const result = await getIfDislikeArticle(id, user);
+                    if (result == true || result == false) {
+                        res.status(200).send({ isDisliked: result });
+                        next();
+                    } else {
+                        res.sendStatus(400);
+                    }
+                }
+            }
+        );
+    });
 
 router.route("/:id")
     .get(checkArticleExistance, async (req, res, next) => {
@@ -28,6 +125,7 @@ router.route("/:id")
         res.send(article);
         next();
     });
+
 
 
 module.exports = router;

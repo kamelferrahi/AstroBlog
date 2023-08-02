@@ -9,7 +9,7 @@ function createArticleCards(articles) {
     return articles.map(function (article) { return <ArticleCard infos={article} /> });
 }
 
-function Feed(props) {
+function Feed({ articles }) {
     const navigate = new useNavigate();
     return (
         <div className="col-span-5" >
@@ -25,7 +25,7 @@ function Feed(props) {
             </div>
             <div className="flex flex-col justify-start items-strech">
                 <div>
-                    {createArticleCards(props.articles)}
+                    {createArticleCards(articles)}
                 </div>
                 <button className="mt-8 flex flex-row items-center justify-center gap-4 border-2 px-4 py-2 rounded-md border-feed-border bg-load-more">
                     <img className="h-4 w-4 opacity-70" src={loadMoreImg} alt="load more" />
