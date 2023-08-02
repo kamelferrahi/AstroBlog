@@ -128,4 +128,14 @@ async function getIfDislikeArticle(id, user) {
     return row;
 }
 
-module.exports = { getAllArticles, getArticle, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle };
+async function getTopArticles() {
+    let [rows] = await pool.query("SELECT id , article_img as img , DATE_FORMAT(date_time, '%M %e, %Y') as date, DATE_FORMAT(date_time, '%H:%i') as time, nb_comments as comments , nb_likes , nb_dislikes , title , article_description as description from article order by date, time desc  limit 3", []);
+    for (let i = 0; i < rows.length; i++) {
+        const [dfields] = await pool.query("SELECT field_name from field where article = ?", [rows[i].id]);
+        const fields = dfields.map(f => f.field_name);
+        rows[i] = { ...rows[i], "fields": fields };
+    }
+    return rows;
+}
+
+module.exports = { getAllArticles, getArticle, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle, getTopArticles };

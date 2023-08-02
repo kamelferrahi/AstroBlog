@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllArticles, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle } = require("../Controllers/articlesController");
+const { getAllArticles, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle, getTopArticles } = require("../Controllers/articlesController");
 const checkArticleExistance = require("../Middlewares/checkArticleExistance");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
@@ -116,6 +116,13 @@ router.route("/dislikes/:id")
                 }
             }
         );
+    });
+
+router.route("/top")
+    .get(async (req, res, next) => {
+        const result = await getTopArticles();
+        res.send(result);
+        next();
     });
 
 router.route("/:id")
