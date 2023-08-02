@@ -39,6 +39,7 @@ html body #root {
 }
 html body #root .markdown > * {
   all: revert;
+  overflow-wrap: break-word;
 }
 html body #root .markdown > * img {
   max-height: 400px;
@@ -89,7 +90,6 @@ html body #root .page-container {
   right: 0;
   z-index: -1;
   background-image: var(--footer-gradient), url("../../assets/images/moon.jpg");
-  background-size: cover;
 }
 
 @font-face {

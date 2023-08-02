@@ -39,6 +39,7 @@ html body #root {
 }
 html body #root .markdown > * {
   all: revert;
+  overflow-wrap: break-word;
 }
 html body #root .markdown > * img {
   max-height: 400px;

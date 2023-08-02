@@ -82,6 +82,7 @@ $padding: 20px;
 
                 .markdown>* {
                     all: revert;
+                    overflow-wrap: break-word;
 
                     img {
                         max-height: 400px;
@@ -94,6 +95,7 @@ $padding: 20px;
                     height: 100%;
                     width: 100%;
                 }
+
             }
         }
     }
