@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function Home() {
+    document.title = "Astroblog | Feed 🚀";
     const [articles, setArticles] = useState([]);
     const [profile, setProfile] = useState();
     const [prevProfile, setPrevProfile] = useState();

@@ -10,13 +10,23 @@ const pool = mysql.createPool({
 }).promise();
 
 async function getAllComments() {
-    const [rows] = await pool.query("SELECT c.id ,article, u.fullname as user_name , u.nb_publications as user_publications ,u.nb_likes as user_likes , u.profile_pic as user_pic , DATE_FORMAT(date_time, '%M %e, %Y') as date , DATE_FORMAT(date_time, '%H:%i') as time  , comment_text as text from comment as c join user u on u.id = c.user order by date_time");
+    const [rows] = await pool.query("SELECT c.id ,article, u.fullname as user_name , u.nb_publications as user_publications ,u.nb_likes as user_likes , u.profile_pic as user_pic , DATE_FORMAT(date_time, '%M %e, %Y') as date , DATE_FORMAT(date_time, '%H:%i') as time  , comment_text as text from comment as c join user u on u.id = c.user order by date_time desc");
     return rows;
 }
 
 async function getArticleComments(id) {
-    const [rows] = await pool.query("SELECT c.id ,article, u.fullname as user_name , u.nb_publications as user_publications ,u.nb_likes as user_likes , u.profile_pic as user_pic , DATE_FORMAT(date_time, '%M %e, %Y') as date , DATE_FORMAT(date_time, '%H:%i') as time  , comment_text as text from comment as c join user u on u.id = c.user where article = ? order by date_time", [id]);
+    const [rows] = await pool.query("SELECT c.id ,article, u.fullname as user_name , u.nb_publications as user_publications ,u.nb_likes as user_likes , u.profile_pic as user_pic , DATE_FORMAT(date_time, '%M %e, %Y') as date , DATE_FORMAT(date_time, '%H:%i') as time  , comment_text as text from comment as c join user u on u.id = c.user where article = ? order by date_time desc", [id]);
     return rows;
 }
 
-module.exports = { getAllComments, getArticleComments };
+async function AddComment(comment, article) {
+    const cdate = new Date(Date.now());
+    const [row1] = await pool.query("INSERT into comment (article , user , date_time , comment_text) value (?, ? , ? ,?)", [article, comment.user, cdate, comment.comment_text]);
+    let row2 = undefined;
+    if (row1.affectedRows > 0) {
+        [row2] = await pool.query("UPDATE article set nb_comments = nb_comments +1 where id = ?", [article]);
+    }
+    return row2 ? row2 : row1;
+}
+
+module.exports = { getAllComments, getArticleComments, AddComment };

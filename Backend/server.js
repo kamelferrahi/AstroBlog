@@ -11,13 +11,44 @@ const cookieParser = require("cookie-parser");
 const refresh = require("./Apis/refresh");
 const logout = require("./Apis/logout");
 const home = require("./Apis/home")
+const user = require("./Apis/user");
 
 const { Client } = require('@elastic/elasticsearch');
-const user = require("./Apis/user");
 
 
 env.config();
 
+
+
+const app = express();
+const PORT = process.env.PORT;
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+  optionSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+app.use("/register", signup);
+app.use("/login", login);
+app.use("/refresh", refresh);
+app.use(verifyJWT);
+app.use("/articles", articles);
+app.use("/comments", comments);
+app.use("/communities", communities);
+app.use("/logout", logout);
+app.use("/home", home)
+app.use("/user", user);
+
+app.get("/", (req, res) => {
+  res.status(200).send("This is the route of the backend server");
+});
+
+const indexName = process.env.ELASTICSEARCH_INDEX;
 const userelastic = process.env.ELASTICSEARCH_USERNAME
 const psw = process.env.ELASTICSEARCH_PASSWORD
 
@@ -33,30 +64,6 @@ const client = new Client({
   tls: { rejectUnauthorized: false }
 });
 
-
-const app = express();
-const PORT = process.env.PORT;
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  credentials: true,
-  optionSuccessStatus: 200
-}
-app.use(cors(corsOptions));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-
-app.use("/register", signup);
-app.use("/login", login);
-app.use("/refresh", refresh);
-app.use(verifyJWT);
-app.use("/articles", articles);
-app.use("/comments", comments);
-app.use("/communities", communities);
-app.use("/logout", logout);
-app.use("/home", home)
-
-const indexName = process.env.ELASTICSEARCH_INDEX;
 
 (async () => {
   try {
@@ -109,11 +116,7 @@ async function run() {
 
 run().catch(console.log)
 
-app.use("/user", user);
 
-app.get("/", (req, res) => {
-  res.status(200).send("This is the route of the backend server");
-})
 
 
 app.listen(PORT, () => {

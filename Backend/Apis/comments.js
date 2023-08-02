@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllComments, getArticleComments } = require("../Controllers/commentsController");
+const { getAllComments, getArticleComments, AddComment } = require("../Controllers/commentsController");
 const checkArticleExistance = require("../Middlewares/checkArticleExistance");
 
 const router = express.Router();
@@ -11,12 +11,23 @@ router.route("/")
         res.send(comments);
         next();
     });
+
 router.route("/:id")
     .get(checkArticleExistance, async (req, res, next) => {
         const id = req.params.id;
         const comments = await getArticleComments(id);
         res.send(comments);
         next();
+    })
+    .post(async (req, res, next) => {
+        const id = req.params.id;
+        const result = await AddComment(req.body, id);
+        if (result.affectedRows > 0) {
+            res.status(200);
+            next();
+        } else {
+            res.sendStatus(401);
+        }
     });
 
 

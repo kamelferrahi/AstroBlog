@@ -1,5 +1,4 @@
 import React from "react";
-import commentsIcon from "../assets/icons/comment.png";
 
 function Comments({ comments }) {
     const createComments = () => {
@@ -22,13 +21,9 @@ function Comments({ comments }) {
         });
     }
     return (
-        <div className="mt-12 mb-4">
-            <div className="border-b-2 border-feed-border pb-2 flex flex-row justify-start items-center gap-4">
-                <img src={commentsIcon} alt="comment" className="h-[25px] w-[25px] block" />
-                <span className="block text-white font-semibold text-card-title">Comments</span>
-            </div>
+        <>
             {createComments()}
-        </div>
+        </>
     );
 }
 export default Comments;
