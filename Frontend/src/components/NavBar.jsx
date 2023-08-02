@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import logo from "../assets/logo.svg";
 import bellIcon from "../assets/icons/bell-ring.png";
-import profileImg from "../assets/images/profile.jpg";
+import { useNavigate } from "react-router-dom";
 
-function NavBar() {
+function NavBar({ profile }) {
+    const navigate = new useNavigate();
 
     const [notifications, setNotifications] = useState(["hello world"]);
-    const [profile, setProfile] = useState({
-        img: profileImg,
-    });
 
     const notify = () => {
         if (notifications.length === 0) {
@@ -20,7 +18,7 @@ function NavBar() {
 
     return (
         <div className="flex flex-row items-center justify-between gap-4 py-10 px-20" >
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center" onClick={() => { navigate("/home") }}>
                 <img src={logo} alt="logo" className="h-12 w-12 -rotate-logo" />
                 <span className="logo font-semibold text-sm text-white">Astrotech</span>
             </div>
@@ -30,7 +28,7 @@ function NavBar() {
                     {notify()}
                 </div>
                 <div className="cursor-pointer">
-                    <img src={profile.img} alt="profile" className="rounded-[50px] h-[60px] w-[60px] object-cover" />
+                    <img src={profile?.img ? profile.img : ""} alt="profile" className="rounded-full h-[60px] w-[60px] object-cover" />
                 </div>
             </div>
 

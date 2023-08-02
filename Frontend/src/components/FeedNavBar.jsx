@@ -29,7 +29,9 @@ function FeedNavBar({ profile }) {
 
     return (
         <div className="px-20 flex flex-row items-center justify-between gap-4 py-10">
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center" onClick={() => {
+                window.location.reload();
+            }}>
                 <img src={logo} alt="logo" className="h-10 -rotate-logo" />
                 <span className="logo font-semibold text-sm text-white">Astrotech</span>
             </div>
@@ -50,8 +52,8 @@ function FeedNavBar({ profile }) {
                 {notify()}
                 {showNotification && <Notifications notifications={notifications} />}
             </div>
-            <div onClick={handleLogout} className="cursor-pointer rounded-[50px] h-[60px] w-[60px]">
-                <img src={profile.img} alt="profile" className="rounded-[50px] h-[60px] w-[60px] object-cover" />
+            <div onClick={handleLogout} className="cursor-pointer">
+                <img src={profile.img} alt="profile" className="rounded-full h-[60px] w-[60px] object-cover" />
             </div>
         </div>
     );

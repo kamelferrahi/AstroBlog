@@ -5,7 +5,6 @@ import Footer from "../components/Footer";
 import Comments from "../components/Comments";
 import ReactMarkdown from "react-markdown";
 import "../styles/pages/article.css";
-import profileImg from "../assets/images/profile.jpg";
 import sendIcon from "../assets/icons/send.png";
 import likesIcon from "../assets/icons/like.png";
 import loadMoreImg from "../assets/icons/reload.png";
@@ -15,7 +14,10 @@ function Article() {
     const [theme, setTheme] = useState({ theme: "dark" });
     const [article, setArticle] = useState(null);
     const [comments, setComments] = useState(null);
-    const [profile, setProfile] = useState(profileImg);
+    const [profile, setProfile] = useState();
+    useEffect(() => {
+        setProfile(JSON.parse(localStorage.getItem("userInfo")));
+    }, []);
 
     const articleId = useParams().articleId;
     const navigate = useNavigate();
@@ -62,7 +64,6 @@ function Article() {
         let checkbox = event.target;
         checkbox.classList.toggle("checked");
         if (checkbox.classList.contains("checked")) { setTheme({ theme: "light" }) } else { setTheme({ theme: "dark" }); };
-        console.log(theme);
     }
     const createFields = (article) => {
         return article.fields.map(function (field) { return <span className="border border-light-pink text-light-pink text-xs font-medium py-1 px-2 rounded-[10px] mr-2">{field}</span> });
@@ -77,7 +78,7 @@ function Article() {
                             <img src={article.img} alt="article" className="object-cover w-full h-full" />
                         </div>
                         <div className="absolute top-0 left-0 right-0">
-                            <NavBar></NavBar>
+                            <NavBar profile={profile} />
                         </div>
                         <div className="px-20 py-10 flex flex-row items-start justify-between gap-4">
                             <div className="flex flex-row gap-2 items-center justify-start">
@@ -104,7 +105,7 @@ function Article() {
                             </div>
                         </div>
                         <div className="px-20 flex flex-row justify-center items-center gap-2">
-                            <img src={profile} alt="profile" className="h-[30px] w-[30px] object-cover rounded-full" />
+                            <img src={profile.img} alt="profile" className="h-[30px] w-[30px] object-cover rounded-full" />
                             <form action="">
                                 <div className="flex flex-row gap-2 justify-start items-center pb-2 border-b-2 border-feed-border w-[400px]">
                                     <input type="text" placeholder="Add comment" className="bg-transparent border-none outline-none text-mini-text w-full" />
@@ -112,23 +113,27 @@ function Article() {
                                 </div>
                             </form>
                         </div>
-                        <div className="grid grid-cols-5 grid-rows-1 w-full mt-10 px-20 gap-4">
+                        <div className="grid grid-cols-6 grid-rows-1 w-full mt-10 px-20 gap-4">
                             <div></div>
-                            <div className="col-span-3">
+                            <div className="col-span-4">
                                 <div className="mb-4">
                                     {createFields(article)}
                                 </div>
                                 <span className="text-subtitle font-medium text-md mb-4 block">{article.date} {article.time}</span>
+                                <h1 className="font-bold text-3xl">{article.title}</h1>
+                                <p className="font-regular text-description text-mini-text mt-2">{article.description}</p>
                                 <div className="markdown">
                                     <ReactMarkdown>{article.content}</ReactMarkdown>
                                 </div>
-                                {comments && <Comments comments={comments}></Comments>}
-                                <dir className="w-full flex justify-center items-center">
-                                    <button className="mt-8 flex flex-row items-center justify-center gap-4 border-2 px-4 py-2 rounded-md border-feed-border bg-load-more">
-                                        <img className="h-4 w-4 opacity-70" src={loadMoreImg} alt="load more" />
-                                        <span className="text-description font-semibold">Load more..</span>
-                                    </button>
-                                </dir>
+                                {comments && <>
+                                    <Comments comments={comments} />
+                                    <dir className="w-full flex justify-center items-center">
+                                        <button className="mt-8 flex flex-row items-center justify-center gap-4 border-2 px-4 py-2 rounded-md border-feed-border bg-load-more">
+                                            <img className="h-4 w-4 opacity-70" src={loadMoreImg} alt="load more" />
+                                            <span className="text-description font-semibold">Load more..</span>
+                                        </button>
+                                    </dir>
+                                </>}
                             </div>
                             <div className="flex flex-row items-start justify-center gap-4">
                                 <div className="flex flex-col justify-center items-center gap-2">

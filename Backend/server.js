@@ -19,25 +19,27 @@ const user = require("./Apis/user");
 env.config();
 
 const userelastic = process.env.ELASTICSEARCH_USERNAME
-const psw = process.env.ELASTICSEARCH_PASSWORD 
+const psw = process.env.ELASTICSEARCH_PASSWORD
 
-const client = new Client({ node: 'https://localhost:9200',
-    auth: {
-        username: userelastic,
-        password: psw
-    },
-    ssl: {
-        rejectUnauthorized: false,
-    }, 
-    tls: { rejectUnauthorized: false }});
+const client = new Client({
+  node: 'https://localhost:9200',
+  auth: {
+    username: userelastic,
+    password: psw
+  },
+  ssl: {
+    rejectUnauthorized: false,
+  },
+  tls: { rejectUnauthorized: false }
+});
 
 
 const app = express();
 const PORT = process.env.PORT;
 const corsOptions = {
-    origin: 'http://localhost:3000',
-    credentials: true,
-    optionSuccessStatus: 200
+  origin: 'http://localhost:3000',
+  credentials: true,
+  optionSuccessStatus: 200
 }
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -52,9 +54,9 @@ app.use("/articles", articles);
 app.use("/comments", comments);
 app.use("/communities", communities);
 app.use("/logout", logout);
-app.use("/home",home)
+app.use("/home", home)
 
-const indexName = process.env.ELASTICSEARCH_INDEX ;
+const indexName = process.env.ELASTICSEARCH_INDEX;
 
 (async () => {
   try {
@@ -77,45 +79,45 @@ const indexName = process.env.ELASTICSEARCH_INDEX ;
 
 
 async function run() {
-    await client.index({
-      index: indexName,
-      body: {
-        title: 'Ned Stark',
-        content: 'Winter is coming.'
-      }
-    })
-  
-    await client.index({
-      index: indexName,
-      body: {
-        title: 'Daenerys Targaryen',
-        content: 'I am the blood of the dragon.'
-      }
-    })
-  
-    await client.index({
-      index: indexName,
-      body: {
-        title: 'Bonjour tous le monde',
-        content: 'this is my description.'
-      }
-    })
-    
-    await client.indices.refresh({index: indexName})
-    console.log('ook')
+  await client.index({
+    index: indexName,
+    body: {
+      title: 'Ned Stark',
+      content: 'Winter is coming.'
+    }
+  })
+
+  await client.index({
+    index: indexName,
+    body: {
+      title: 'Daenerys Targaryen',
+      content: 'I am the blood of the dragon.'
+    }
+  })
+
+  await client.index({
+    index: indexName,
+    body: {
+      title: 'Bonjour tous le monde',
+      content: 'this is my description.'
+    }
+  })
+
+  await client.indices.refresh({ index: indexName })
+  console.log('ook')
 }
-  
+
 run().catch(console.log)
 
 app.use("/user", user);
 
 app.get("/", (req, res) => {
-    res.status(200).send("This is the route of the backend server");
+  res.status(200).send("This is the route of the backend server");
 })
 
 
 app.listen(PORT, () => {
-    console.log(`server has been started at port ${PORT}`);
+  console.log(`server has been started at port ${PORT}`);
 })
 
-module.exports = { client, indexName};
+module.exports = { client, indexName };

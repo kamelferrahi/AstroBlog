@@ -37,32 +37,16 @@ function Home() {
                 }
             }
         };
-    
+
         fetchArticles();
-    
+
     }, []);
 
-    
-
-    
-    
-
-
     useEffect(() => {
         const fetchProfile = (async () => {
             setPrevProfile(profile);
             const result = await fetch(`http://localhost:5000/user/${profile.id}`, { credentials: "include" });
-            result.json().then(data => setProfile(prevalue => prevalue = { ...prevalue, ...data }));
-        });
-        if (JSON.stringify(profile) != JSON.stringify(prevProfile)) fetchProfile();
-    }, [profile]);
-
-
-    useEffect(() => {
-        const fetchProfile = (async () => {
-            setPrevProfile(profile);
-            const result = await fetch(`http://localhost:5000/user/${profile.id}`, { credentials: "include" });
-            result.json().then(data => setProfile(prevalue => prevalue = { ...prevalue, ...data }));
+            result.json().then(data => { setProfile(prevalue => prevalue = { ...prevalue, ...data }); localStorage.setItem('userInfo', JSON.stringify(profile)); });
         });
         if (JSON.stringify(profile) != JSON.stringify(prevProfile)) fetchProfile();
     }, [profile]);
