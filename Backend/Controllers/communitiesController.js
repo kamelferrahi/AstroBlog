@@ -19,4 +19,32 @@ async function getCommunity(id) {
     return rows;
 }
 
-module.exports = { getAllCommunities, getCommunity };
+async function getUserCommunities(id) {
+    const [rows] = await pool.query("SELECT id , profile_img as img , community_name as name , nb_likes as likes , nb_followers as followers from community where id in (select id_community from user_community where id_user = ?) ", [id]);
+    return rows;
+}
+
+async function getUserSuggestions(id) {
+    const [rows] = await pool.query("SELECT id , profile_img as img , community_name as name , nb_likes as likes , nb_followers as followers from community where id not in (select id_community from user_community where id_user = ?) ", [id]);
+    return rows;
+}
+
+async function unfollowCommunity(community, user) {
+    const [row1] = await pool.query("UPDATE community set nb_followers = nb_followers-1 where id = ?", [community]);
+    let row2 = undefined;
+    if (row1 && row1.affectedRows > 0) {
+        [row2] = await pool.query("DELETE FROM user_community where id_user = ? and id_community = ? ", [user, community]);
+    }
+    return row2 ? row2 : row1;
+}
+
+async function followCommunity(community, user) {
+    const [row1] = await pool.query("UPDATE community set nb_followers = nb_followers+1 where id = ?", [community]);
+    let row2 = undefined;
+    if (row1 && row1.affectedRows > 0) {
+        [row2] = await pool.query("INSERT into user_community (id_user , id_community) value (?,?)", [user, community]);
+    }
+    return row2 ? row2 : row1;
+}
+
+module.exports = { getAllCommunities, getCommunity, getUserCommunities, getUserSuggestions, unfollowCommunity, followCommunity };

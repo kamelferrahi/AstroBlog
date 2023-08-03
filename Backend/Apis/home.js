@@ -4,7 +4,7 @@ const router = express.Router();
 
 
 
-router.route("/").get(async ( req, res)=>{
+router.route("/").get(async (req, res) => {
     const search = req.query
     console.log("ss")
     if (search) {

@@ -76,8 +76,8 @@ function WriteArticleForm({ profile }) {
                 </div>
 
             </div>
-            <div className="w-full flex flex-row justify-center items-center mt-12">
-                <input type="submit" className="w-1/4 py-4 rounded-sm bg-gradient-to-r from-light-pink to-dark-pink font-medium text-sm text-white" value="publish" />
+            <div className="w-full flex flex-row justify-end items-center mt-12">
+                <input type="submit" className="w-[200px] py-4 rounded-md bg-dark-pink font-medium text-sm text-white" value="publish" />
             </div>
         </form>
     );
