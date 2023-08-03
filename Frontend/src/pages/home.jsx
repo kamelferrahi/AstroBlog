@@ -68,7 +68,7 @@ function Home() {
                             <div></div>
                             <Feed articles={articles} maxArticlesPerPage={maxArticlesPerPage} setArticles={setArticles} />
                             <div className=" col-span-2 h-full w-full relative">
-                                <Contacts />
+                                <Contacts userId={profile.id} />
                             </div>
                         </div>
                         <Footer />

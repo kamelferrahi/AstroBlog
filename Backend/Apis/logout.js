@@ -11,7 +11,7 @@ router.route("/")
             res.sendStatus(200);
             next();
         } else {
-            res.sendStatus(401);
+            res.status(401);
         }
     });
 
