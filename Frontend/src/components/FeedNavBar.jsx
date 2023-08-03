@@ -6,7 +6,7 @@ import bellIcon from "../assets/icons/bell-ring.png";
 import { useNavigate } from "react-router-dom";
 import Notifications from "./Notifications";
 
-function FeedNavBar({ profile }) {
+function FeedNavBar({ profile}) {
     const navigate = useNavigate();
     const [notifications, setNotifications] = useState([{ id: 1, img: "https://images.unsplash.com/photo-1464802686167-b939a6910659?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1450&q=80", message: "Yacine has posted new article", date: new Date(Date.now()) },]);
     const [showNotification, setShowNotification] = useState(false);

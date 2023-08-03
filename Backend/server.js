@@ -114,7 +114,7 @@ async function run() {
   console.log('ook')
 }
 
-run().catch(console.log)
+//run().catch(console.log)
 
 
 
