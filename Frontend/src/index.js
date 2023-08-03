@@ -9,6 +9,7 @@ import E404 from "./pages/E404";
 import WriteArticle from "./pages/writeArticle";
 
 import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
+import Profil from './pages/profil';
 
 const router = createBrowserRouter([
   {
@@ -36,8 +37,11 @@ const router = createBrowserRouter([
   {
     path: '/write_article',
     element: <WriteArticle />
-  }
-  , {
+  }, {
+    path: '/profil',
+    element: <Profil />
+  }, 
+  {
     path: '/E404',
     element: <E404 />
   },
@@ -48,5 +52,5 @@ const router = createBrowserRouter([
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <RouterProvider router={router} />
+  <RouterProvider router={ router } />
 );
