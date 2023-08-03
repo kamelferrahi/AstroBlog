@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllArticles, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle, getTopArticles } = require("../Controllers/articlesController");
+const { getAllArticles, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle, getTopArticles, getUserArticles } = require("../Controllers/articlesController");
 const checkArticleExistance = require("../Middlewares/checkArticleExistance");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
@@ -122,6 +122,14 @@ router.route("/top")
     .get(async (req, res, next) => {
         const result = await getTopArticles();
         res.send(result);
+        next();
+    });
+
+router.route("/-:max")
+    .get(async (req, res, next) => {
+        const max = parseInt(req.params.max);
+        const result = await getUserArticles(max);
+        res.send({ articles: result, userId: req.userId });
         next();
     });
 

@@ -71,8 +71,21 @@ $padding: 20px;
             padding: 0;
             margin: 0;
             overflow-x: hidden;
-
             overflow-y: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+
+            .scrollbar-track-y {
+                width: 5px !important;
+            }
+
+            .scrollbar-track {
+                background: none !important;
+            }
+
+            .scrollbar-thumb {
+                background: var(--dark-color);
+            }
 
             #root {
                 width: 100%;
