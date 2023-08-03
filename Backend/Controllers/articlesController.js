@@ -11,7 +11,7 @@ const pool = mysql.createPool({
 }).promise();
 
 async function getAllArticles() {
-    const [rows] = await pool.query("SELECT R.id, title, description, date, time, img, comments, article_likes , article_dislikes, user_name, user_profile, user_likes, user_publications, c.community_name, c.profile_img as community_profile FROM(SELECT a.id, title, article_description as description, DATE_FORMAT(date_time, '%M %e, %Y') as date, DATE_FORMAT(date_time, '%H:%i') as time, article_img as img, nb_comments as comments, a.nb_likes as article_likes , nb_dislikes as article_dislikes, fullname as user_name, profile_pic as user_profile, u.nb_likes as user_likes, nb_publications as user_publications, community  FROM article a join user u on a.author = u.id) as R join community c on c.id = R.community order by date, time desc");
+    const [rows] = await pool.query("SELECT R.id, title, description,date_time, date, time, img, comments, article_likes , article_dislikes, user_name, user_profile, user_likes, user_publications, c.community_name, c.profile_img as community_profile FROM(SELECT a.id, title, article_description as description,date_time, DATE_FORMAT(date_time, '%M %e, %Y') as date, DATE_FORMAT(date_time, '%H:%i') as time, article_img as img, nb_comments as comments, a.nb_likes as article_likes , nb_dislikes as article_dislikes, fullname as user_name, profile_pic as user_profile, u.nb_likes as user_likes, nb_publications as user_publications, community  FROM article a join user u on a.author = u.id) as R join community c on c.id = R.community order by date_time  desc");
     let articles = [];
     for (let i = 0; i < rows.length; i++) {
         let row = rows[i];
@@ -29,7 +29,7 @@ async function getArticleFields(id) {
 }
 
 async function getArticleWithContent(id) {
-    const [row] = await pool.query("SELECT R.id, title, description, date, time, img, comments, article_likes , article_dislikes, content, user_name, user_profile, user_likes, user_publications, c.community_name, c.profile_img as community_profile FROM(SELECT a.id, title, article_description as description, DATE_FORMAT(date_time, '%M %e, %Y') as date, DATE_FORMAT(date_time, '%H:%i') as time, article_img as img, nb_comments as comments, a.nb_likes as article_likes , nb_dislikes as article_dislikes, content, fullname as user_name, profile_pic as user_profile, u.nb_likes as user_likes, nb_publications as user_publications, community  FROM article a join user u on a.author = u.id where a.id = ?) as R join community c on c.id = R.community order by date,time desc", [id]);
+    const [row] = await pool.query("SELECT R.id, title, description,date_time, date, time, img, comments, article_likes , article_dislikes, content, user_name, user_profile, user_likes, user_publications, c.community_name, c.profile_img as community_profile FROM(SELECT a.id, title, article_description as description,date_time, DATE_FORMAT(date_time, '%M %e, %Y') as date, DATE_FORMAT(date_time, '%H:%i') as time, article_img as img, nb_comments as comments, a.nb_likes as article_likes , nb_dislikes as article_dislikes, content, fullname as user_name, profile_pic as user_profile, u.nb_likes as user_likes, nb_publications as user_publications, community  FROM article a join user u on a.author = u.id where a.id = ?) as R join community c on c.id = R.community order by date_time desc", [id]);
     if (row[0]) {
         let article = row[0];
         const fields = await getArticleFields(id);
@@ -128,4 +128,27 @@ async function getIfDislikeArticle(id, user) {
     return row;
 }
 
-module.exports = { getAllArticles, getArticle, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle };
+async function getTopArticles() {
+    let [rows] = await pool.query("SELECT id , DATE(date_time) as date_stamp , article_img as img , DATE_FORMAT(date_time, '%M %e, %Y') as date, DATE_FORMAT(date_time, '%H:%i') as time, nb_comments as comments , nb_likes , nb_dislikes , title , article_description as description , nb_likes + nb_dislikes + nb_comments as total from article order by date_stamp desc , total desc  limit 3", []);
+    for (let i = 0; i < rows.length; i++) {
+        const [dfields] = await pool.query("SELECT field_name from field where article = ?", [rows[i].id]);
+        const fields = dfields.map(f => f.field_name);
+        rows[i] = { ...rows[i], "fields": fields };
+    }
+    return rows;
+}
+
+async function getUserArticles(max) {
+    const [rows] = await pool.query("SELECT R.id, title, description,date_time, date, time, img, comments, article_likes , article_dislikes, user_name, user_profile, user_likes, user_publications, c.community_name, c.profile_img as community_profile FROM(SELECT a.id, title, article_description as description,date_time, DATE_FORMAT(date_time, '%M %e, %Y') as date, DATE_FORMAT(date_time, '%H:%i') as time, article_img as img, nb_comments as comments, a.nb_likes as article_likes , nb_dislikes as article_dislikes, fullname as user_name, profile_pic as user_profile, u.nb_likes as user_likes, nb_publications as user_publications, community  FROM article a join user u on a.author = u.id) as R join community c on c.id = R.community order by date_time  desc limit ?", [max]);
+    let articles = [];
+    for (let i = 0; i < rows.length; i++) {
+        let row = rows[i];
+        const id = row.id;
+        const fields = await getArticleFields(id);
+        row["fields"] = fields.map(t => t.field_name);
+        articles.push(row);
+    }
+    return articles;
+}
+
+module.exports = { getAllArticles, getArticle, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle, getTopArticles, getUserArticles };

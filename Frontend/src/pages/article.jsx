@@ -9,6 +9,7 @@ import loadMoreImg from "../assets/icons/reload.png";
 import AddComment from "../components/AddComment";
 import commentsIcon from "../assets/icons/comment.png";
 import Reviews from "../components/Reviews";
+import SmoothScroll from "../components/SmoothScroll";
 
 function Article() {
     const [theme, setTheme] = useState({ theme: "dark" });
@@ -76,6 +77,7 @@ function Article() {
         <>
             {
                 article ? <div className="bg-gradient-to-b from-page-light-dark to-page-dark relative text-white" key={article.id}>
+                    <SmoothScroll />
                     <div className="relative z-10">
                         <div className="h-96 w-full">
                             <img src={article.img} alt="article" className="object-cover w-full h-full" />

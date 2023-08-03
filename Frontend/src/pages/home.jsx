@@ -8,9 +8,11 @@ import Feed from "../components/Feed";
 import Footer from "../components/Footer";
 import "../styles/pages/feed.css";
 import { useNavigate } from "react-router-dom";
+import SmoothScroll from "../components/SmoothScroll";
 
 
 function Home() {
+    const maxArticlesPerPage = 3;
     document.title = "Astroblog | Feed 🚀";
     const [articles, setArticles] = useState([]);
     const [profile, setProfile] = useState();
@@ -19,7 +21,7 @@ function Home() {
 
     useEffect(() => {
         const fetchArticles = async () => {
-            var result = await fetch("http://localhost:5000/articles", { credentials: "include" });
+            var result = await fetch(`http://localhost:5000/articles/-${maxArticlesPerPage}`, { credentials: "include" });
             if (result.status === 401 || result.status === 403) {
                 const data = await fetch("http://localhost:5000/refresh", { credentials: "include" });
                 if (data.status === 401 || data.status === 403) {
@@ -47,7 +49,7 @@ function Home() {
         const fetchProfile = (async () => {
             setPrevProfile(profile);
             const result = await fetch(`http://localhost:5000/user/${profile.id}`, { credentials: "include" });
-            result.json().then(data => { setProfile(prevalue => prevalue = { ...prevalue, ...data }); localStorage.setItem('userInfo', JSON.stringify(profile)); });
+            result.json().then(data => { setProfile({ ...profile, ...data }); localStorage.setItem('userInfo', JSON.stringify(profile)); });
         });
         if (JSON.stringify(profile) != JSON.stringify(prevProfile)) fetchProfile();
     }, [profile]);
@@ -59,11 +61,12 @@ function Home() {
                     <AnimatedBg />
                     <div className="relative z-10">
                         <FeedNavBar profile={profile} />
+                        <SmoothScroll />
                         <TopArticles />
                         <div className="px-20 grid grid-cols-8 grid-rows-1 gap-8 mt-4 mb-16">
                             {/* <Banners /> */}
                             <div></div>
-                            <Feed articles={articles} />
+                            <Feed articles={articles} maxArticlesPerPage={maxArticlesPerPage} setArticles={setArticles} />
                             <div className=" col-span-2 h-full w-full relative">
                                 <Contacts />
                             </div>

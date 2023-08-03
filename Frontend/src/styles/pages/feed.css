@@ -30,6 +30,17 @@ html body {
   margin: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+html body .scrollbar-track-y {
+  width: 5px !important;
+}
+html body .scrollbar-track {
+  background: none !important;
+}
+html body .scrollbar-thumb {
+  background: var(--dark-color);
 }
 html body #root {
   width: 100%;
