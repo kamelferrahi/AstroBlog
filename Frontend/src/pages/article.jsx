@@ -16,6 +16,8 @@ function Article() {
     const [article, setArticle] = useState(null);
     const [comments, setComments] = useState(null);
     const [profile, setProfile] = useState();
+    const maxComments = 3;
+    const [max, setMax] = useState(maxComments);
 
     document.title = article?.title ? article.title : "Astroblog";
 
@@ -50,7 +52,7 @@ function Article() {
 
     useEffect(() => {
         const fetchComments = async () => {
-            const result = await fetch(`http://localhost:5000/comments/${articleId}`, { credentials: "include" });
+            const result = await fetch(`http://localhost:5000/comments/${articleId}-${max}`, { credentials: "include" });
             if (result.status === 404 || result.status === 400) {
                 navigate("/E404");
             } else {
@@ -72,6 +74,25 @@ function Article() {
     const createFields = (article) => {
         return article.fields.map(function (field) { return <span className="border border-light-pink text-light-pink text-xs font-medium py-1 px-2 rounded-[10px] mr-2">{field}</span> });
     }
+
+    const handleLoadMore = () => {
+        setMax(max + maxComments);
+    }
+
+    useEffect(() => {
+        const fetchComments = async () => {
+            const result = await fetch(`http://localhost:5000/comments/${articleId}-${max}`, { credentials: "include" });
+            if (result.status === 404 || result.status === 400) {
+                navigate("/E404");
+            } else {
+                result.json().then(json => {
+                    setComments(json);
+                    document.title = json.title;
+                })
+            }
+        };
+        if (max > maxComments) fetchComments();
+    }, [max]);
 
     return (
         <>
@@ -129,10 +150,10 @@ function Article() {
                                     </div>
                                     {comments && < Comments comments={comments} />}
                                 </div>
-                                {comments && comments.length > 3 &&
+                                {comments && comments.length === max &&
                                     <>
                                         <dir className="w-full flex justify-center items-center">
-                                            <button className="mt-8 flex flex-row items-center justify-center gap-4 border-2 px-4 py-2 rounded-md border-feed-border bg-load-more">
+                                            <button className="mt-8 flex flex-row items-center justify-center gap-4 border-2 px-4 py-2 rounded-md border-feed-border bg-load-more" onClick={handleLoadMore}>
                                                 <img className="h-4 w-4 opacity-70" src={loadMoreImg} alt="load more" />
                                                 <span className="text-description font-semibold">Load more..</span>
                                             </button>

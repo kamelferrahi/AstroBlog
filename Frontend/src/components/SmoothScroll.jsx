@@ -17,6 +17,9 @@ function SmoothScroll() {
     useEffect(() => {
         Scrollbar.use(OverscrollPlugin);
         Scrollbar.init(document.body, options);
+        return () => {
+            if (Scrollbar) Scrollbar.destroy(document.body);
+        }
     }, []);
     return null;
 }

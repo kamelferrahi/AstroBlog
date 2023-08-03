@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllComments, getArticleComments, AddComment } = require("../Controllers/commentsController");
+const { getAllComments, getArticleComments, AddComment, getMaxComments } = require("../Controllers/commentsController");
 const checkArticleExistance = require("../Middlewares/checkArticleExistance");
 
 const router = express.Router();
@@ -9,6 +9,15 @@ router.route("/")
     .get(async (req, res, next) => {
         const comments = await getAllComments();
         res.send(comments);
+        next();
+    });
+
+router.route("/:id-:max")
+    .get(checkArticleExistance, async (req, res, next) => {
+        const max = parseInt(req.params.max);
+        const id = req.params.id;
+        const result = await getMaxComments(id, max);
+        res.send(result);
         next();
     });
 

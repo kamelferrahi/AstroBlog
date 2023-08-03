@@ -127,10 +127,22 @@ router.route("/top")
 
 router.route("/-:max")
     .get(async (req, res, next) => {
-        const max = parseInt(req.params.max);
-        const result = await getUserArticles(max);
-        res.send({ articles: result, userId: req.userId });
-        next();
+        const token = req.cookies.token;
+        jwt.verify(
+            token,
+            process.env.ACCESS_TOKEN_SECRET,
+            async (err, decoded) => {
+                if (err) {
+                    res.sendStatus(403);
+                } else {
+                    const user = decoded.userId;
+                    const max = parseInt(req.params.max);
+                    const result = await getUserArticles(user, max);
+                    res.send({ articles: result, userId: req.userId });
+                    next();
+                }
+            }
+        );
     });
 
 router.route("/:id")
