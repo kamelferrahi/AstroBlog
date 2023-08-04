@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS USER(
     category varchar(15) not null,
     details varchar(100),
     user_password varchar(100) not null,
-    refresh_token varchar(255)
+    refresh_token varchar(255),
+    bio varchar(255)
 );
 
 CREATE TABLE IF NOT EXISTS COMMUNITY(

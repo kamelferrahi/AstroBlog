@@ -21,7 +21,7 @@ function TopArticles() {
 
     return (
         <>
-            {topArticles.length > 0 && <div className="px-20 py-8">
+            {topArticles.length === 3 && <div className="px-20 py-8">
                 <div className="pb-4 border-b-2 border-feed-border flex flex-row justify-start items-center gap-4">
                     <img src={topArticlesIcon} alt="top articles" className="h-5 w-5" />
                     <h2 className="font-semibold text-big-title text-white">Top Articles</h2>

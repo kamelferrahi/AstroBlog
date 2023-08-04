@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import feather from "../assets/icons/feather.png";
 import WriteArticleForm from "../components/WriteArticleForm";
 import { useState, useEffect } from "react";
+import SmoothScroll from "../components/SmoothScroll";
 
 function WriteArticle() {
     const [profile, setProfile] = useState(null);
@@ -17,6 +18,7 @@ function WriteArticle() {
                 < AnimatedBg />
                 <div className="relative z-10">
                     <NavBar profile={profile} />
+                    <SmoothScroll />
                     <div className="px-20 py-8">
                         <div className="pb-8 flex flex-row justify-start items-center gap-4">
                             <img src={feather} alt="top articles" className="h-5 w-5" />

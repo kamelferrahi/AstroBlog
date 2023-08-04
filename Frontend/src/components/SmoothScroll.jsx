@@ -4,12 +4,13 @@ import OverscrollPlugin from "smooth-scrollbar/plugins/overscroll"
 function SmoothScroll() {
     const overscrollOptions = {
         enable: true,
-        effect: 'bounce',
-        damping: 0.15,
-        maxOversroll: 10,
+        effect: 'glow',
+        damping: 0.2,
+        maxOversroll: 150,
+        glowColor: "#da16db"
     };
     const options = {
-        damping: 0.08,
+        damping: 0.7,
         plugins: {
             overscroll: { ...overscrollOptions }
         }
