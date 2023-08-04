@@ -1,20 +1,32 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.svg";
-import filterIcon from "../assets/icons/filter.png";
-import searchIcon from "../assets/icons/search.png";
 import bellIcon from "../assets/icons/bell-ring.png";
 import { useNavigate } from "react-router-dom";
 import Notifications from "./Notifications";
+import SearchBar from "./SearchBar";
 
-function FeedNavBar({ profile}) {
+function FeedNavBar({ profile }) {
     const navigate = useNavigate();
-    const [notifications, setNotifications] = useState([{ id: 1, img: "https://images.unsplash.com/photo-1464802686167-b939a6910659?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1450&q=80", message: "Yacine has posted new article", date: new Date(Date.now()) },]);
+    const [notifications, setNotifications] = useState([
+        {
+            id: 1,
+            img: "https://images.unsplash.com/photo-1464802686167-b939a6910659?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1450&q=80", message: "New article in Astrotech club",
+            date: new Date(Date.now()).toUTCString(),
+            link: "/article/1"
+        },
+        {
+            id: 2,
+            img: "https://images.unsplash.com/photo-1464802686167-b939a6910659?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1450&q=80", message: "New article in Astrotech club",
+            date: new Date(Date.now()).toUTCString(),
+            link: "/article/1"
+        },
+    ]);
     const [showNotification, setShowNotification] = useState(false);
     const handleBellClick = () => { setShowNotification(prev => !prev); }
 
     const notify = () => {
         if (notifications.length === 0) {
-            return <div></div>;
+            return <></>;
         } else {
             return <div id="notifications" className="h-[10px] w-[10px] rounded-[10px] bg-light-pink absolute right-0 top-0"></div>;
         }
@@ -35,24 +47,13 @@ function FeedNavBar({ profile}) {
                 <img src={logo} alt="logo" className="h-10 -rotate-logo" />
                 <span className="logo font-semibold text-sm text-white">Astrotech</span>
             </div>
-            <div className="flex flex-row items-center justify-between border border-feed-border border-2 p-4 rounded-md w-5/6 gap-2">
-                <img src={searchIcon} alt="search" className="h-[20px] w-[20px] opacity-[.7]" />
-                <form className="flex flex-row items-center justify-between w-full gap-2">
-                    <div className="w-full">
-                        <input type="text" placeholder="Click to search ..." className="w-full outline-none border-none bg-transparent text-white" />
-                    </div>
-                    <div>
-                        <img src={filterIcon} alt="filter" className="h-[20px] w-[20px] opacity-[.7] cursor-pointer" />
-                        {/* filters container with inputs */}
-                    </div>
-                </form>
-            </div>
-            <div className="relative cursor-pointer">
+            <SearchBar />
+            <div className="relative cursor-pointer min-w-[25px]">
                 <img src={bellIcon} alt="bell" className="h-6 w-6" onClick={handleBellClick} />
                 {notify()}
                 {showNotification && <Notifications notifications={notifications} />}
             </div>
-            <div onClick={handleLogout} className="cursor-pointer">
+            <div onClick={handleLogout} className="cursor-pointer w-[80px]">
                 <img src={profile.img} alt="profile" className="rounded-full h-[60px] w-[60px] object-cover" />
             </div>
         </div>

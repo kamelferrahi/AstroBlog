@@ -1,6 +1,5 @@
 const mysql = require("mysql2");
 const env = require("dotenv");
-const { param } = require("../Apis/articles");
 env.config();
 
 const pool = mysql.createPool({
@@ -151,4 +150,17 @@ async function getUserArticles(user, max) {
     return articles;
 }
 
-module.exports = { getAllArticles, getArticle, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle, getTopArticles, getUserArticles };
+async function getMyArticles(user) {
+    const [rows] = await pool.query("SELECT R.id, title, description,date_time, date, time, img, comments, article_likes , article_dislikes, user_name, user_profile, user_likes, user_publications, c.community_name, c.profile_img as community_profile FROM(SELECT a.id, title, article_description as description,date_time, DATE_FORMAT(date_time, '%M %e, %Y') as date, DATE_FORMAT(date_time, '%H:%i') as time, article_img as img, nb_comments as comments, a.nb_likes as article_likes , nb_dislikes as article_dislikes, fullname as user_name, profile_pic as user_profile, u.nb_likes as user_likes, nb_publications as user_publications, community  FROM article a join (select * from user where id = ? )as u on a.author = u.id) as R join community c on c.id = R.community order by date_time  desc", [user]);
+    let articles = [];
+    for (let i = 0; i < rows.length; i++) {
+        let row = rows[i];
+        const id = row.id;
+        const fields = await getArticleFields(id);
+        row["fields"] = fields.map(t => t.field_name);
+        articles.push(row);
+    }
+    return articles;
+}
+
+module.exports = { getAllArticles, getArticle, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle, getTopArticles, getUserArticles, getMyArticles };

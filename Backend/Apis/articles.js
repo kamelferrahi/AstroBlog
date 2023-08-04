@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllArticles, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle, getTopArticles, getUserArticles } = require("../Controllers/articlesController");
+const { getAllArticles, getArticleWithContent, createArticle, updateLikes, getIfLikeArticle, updateDislikes, getIfDislikeArticle, getTopArticles, getUserArticles, getMyArticles } = require("../Controllers/articlesController");
 const checkArticleExistance = require("../Middlewares/checkArticleExistance");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
@@ -145,6 +145,25 @@ router.route("/-:max")
         );
     });
 
+router.route("/mine")
+    .get(async (req, res, next) => {
+        const token = req.cookies.token;
+        jwt.verify(
+            token,
+            process.env.ACCESS_TOKEN_SECRET,
+            async (err, decoded) => {
+                if (err) {
+                    res.sendStatus(403);
+                } else {
+                    const user = decoded.userId;
+                    const result = await getMyArticles(user);
+                    res.send({ articles: result, userId: req.userId });
+                    next();
+                }
+            }
+        );
+    });
+
 router.route("/:id")
     .get(checkArticleExistance, async (req, res, next) => {
         const id = req.params.id;
@@ -152,7 +171,5 @@ router.route("/:id")
         res.send(article);
         next();
     });
-
-
 
 module.exports = router;

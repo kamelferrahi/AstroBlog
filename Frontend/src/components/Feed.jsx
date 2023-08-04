@@ -9,7 +9,7 @@ function createArticleCards(articles) {
     return articles.map(function (article) { return <ArticleCard infos={article} /> });
 }
 
-function Feed({ articles, maxArticlesPerPage, setArticles }) {
+function Feed({ articles, maxArticlesPerPage, setArticles, isProfile }) {
     const navigate = new useNavigate();
     const [max, setMax] = useState(maxArticlesPerPage);
 
@@ -49,10 +49,10 @@ function Feed({ articles, maxArticlesPerPage, setArticles }) {
                     <img src={article} alt="articles" className="h-5 w-5" />
                     <h2 className="font-semibold text-big-title text-white">Articles</h2>
                 </div>
-                <button className="flex flex-row items-center justify-center gap-2 border border-white py-2 px-4 rounded-md" onClick={() => navigate("/write_article")}>
+                {!isProfile && <button className="flex flex-row items-center justify-center gap-2 border border-white py-2 px-4 rounded-md" onClick={() => navigate("/write_article")}>
                     <img src={feather} alt="write" className="h-4 w-4" />
                     <span className="text-white font-medium text-base">write</span>
-                </button>
+                </button>}
             </div>
             <div className="flex flex-col justify-start items-strech">
                 <div>

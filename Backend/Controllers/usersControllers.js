@@ -58,7 +58,7 @@ async function updateRefreshToken(id) {
 }
 
 async function getUserProfile(id) {
-    const [res] = await pool.query("SELECT fullname , profile_pic as img from user where id = ?", [id]);
+    const [res] = await pool.query("SELECT fullname , profile_pic as img , bio , nb_publications as publications , nb_likes as likes from user where id = ?", [id]);
     return res;
 }
 
