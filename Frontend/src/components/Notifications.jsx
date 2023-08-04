@@ -4,14 +4,14 @@ function Notifications({ notifications }) {
     const navigate = new useNavigate();
     const renderNotifications = (notifications) => {
         return notifications.map((notif) => {
-            console.log(notif);
             return (
-                <div className="flex flex-row items-end justify-start gap-2 py-2 border-b border-border-grey" key={notif.id} onClick={() => navigate(notif.link)}>
+                <div className="flex flex-row items-end justify-start gap-2 py-2 border-b border-border-grey relative hover:bg-input-light-grey" key={notif.id} onClick={() => navigate(notif.link)}>
                     <img src={notif.img} alt={notif.img} className="h-[40px] w-[50px] rounded-sm" />
                     <div className="flex flex-col items-center justify-start">
-                        <span className="w-full text-black font-semibold text-small-subtitle">{notif.message}</span>
-                        <span className="w-full text-light-text text-smallest-text">{notif.date}</span>
+                        <span className={`w-full ${notif.seen ? "text-black" : "text-light-pink"} font-semibold text-small-subtitle`}>{notif.message}</span>
+                        <span className={`w-full ${notif.seen ? "text-light-text" : "text-light-pink font-medium"} text-smallest-text `}>{notif.date}</span>
                     </div>
+                    {!notif.seen && <div className="h-2 w-2 rounded-full bg-light-pink absolute top-1 right-0"></div>}
                 </div>
             );
         });

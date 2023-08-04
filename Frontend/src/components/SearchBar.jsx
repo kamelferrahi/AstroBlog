@@ -3,7 +3,7 @@ import filterIcon from "../assets/icons/filter.png";
 import searchIcon from "../assets/icons/search.png";
 import { useNavigate } from "react-router-dom";
 
-function SearchBar() {
+function SearchBar({ setShowNotification }) {
     const [isFocus, setFocus] = useState(false);
     const [result, setResult] = useState([
         {
@@ -23,6 +23,7 @@ function SearchBar() {
 
     const handleFocus = () => {
         setFocus(true);
+        setShowNotification(false);
     }
     const handleUnFocus = () => {
         setFocus(false);
