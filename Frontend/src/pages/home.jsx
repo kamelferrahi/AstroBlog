@@ -9,7 +9,7 @@ import Footer from "../components/Footer";
 import "../styles/pages/feed.css";
 import { useNavigate } from "react-router-dom";
 import SmoothScroll from "../components/SmoothScroll";
-
+import LoadingPage from "../components/LoadingPage";
 
 function Home() {
     const maxArticlesPerPage = 3;
@@ -17,6 +17,7 @@ function Home() {
     const [articles, setArticles] = useState([]);
     const [profile, setProfile] = useState();
     const [prevProfile, setPrevProfile] = useState();
+    const picturesUrl = "http://localhost:5000/picture/";
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -60,20 +61,20 @@ function Home() {
                 <div id="feed" className="bg-gradient-to-b from-page-light-dark to-page-dark relative">
                     <AnimatedBg />
                     <div className="relative z-10">
-                        <FeedNavBar profile={profile} />
+                        <FeedNavBar profile={profile} picturesUrl={picturesUrl} />
                         <SmoothScroll />
                         <TopArticles />
                         <div className="px-20 grid grid-cols-8 grid-rows-1 gap-8 mt-4 mb-16">
                             {/* <Banners /> */}
                             <div></div>
-                            <Feed articles={articles} maxArticlesPerPage={maxArticlesPerPage} setArticles={setArticles} />
+                            <Feed articles={articles} maxArticlesPerPage={maxArticlesPerPage} setArticles={setArticles} picturesUrl={picturesUrl} />
                             <div className=" col-span-2 h-full w-full relative">
                                 <Contacts userId={profile.id} />
                             </div>
                         </div>
                         <Footer />
                     </div>
-                </div> : <span>loading...</span>
+                </div> : <LoadingPage />
             }
         </>
 

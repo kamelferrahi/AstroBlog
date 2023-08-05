@@ -7,7 +7,7 @@ function SmoothScroll() {
         effect: 'glow',
         damping: 0.2,
         maxOversroll: 150,
-        glowColor: "#da16db"
+        glowColor: "#ffffff"
     };
     const options = {
         damping: 0.7,

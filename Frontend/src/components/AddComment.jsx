@@ -3,7 +3,7 @@ import sendIcon from "../assets/icons/send.png";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-function AddComment({ profile }) {
+function AddComment({ profile, picturesUrl }) {
     const article = useParams().articleId;
     const [inputs, setInputs] = useState({ user: profile.id });
     const url = `http://localhost:5000/comments/${article}`;
@@ -19,7 +19,7 @@ function AddComment({ profile }) {
     }
     return (
         <div className="px-20 flex flex-row justify-center items-center gap-2">
-            <img src={profile.img} alt="profile" className="h-[30px] w-[30px] object-cover rounded-full" />
+            <img src={picturesUrl + profile.img} alt="profile" className="h-[30px] w-[30px] object-cover rounded-full" />
             <form action="" onSubmit={handleSubmit}>
                 <div className="flex flex-row gap-2 justify-start items-center pb-2 border-b-2 border-feed-border w-[400px] relative">
                     <input type="text" placeholder="Add comment" required className="bg-transparent border-none outline-none text-mini-text w-full" onChange={(e) => setInputs({ ...inputs, comment_text: e.target.value })} />

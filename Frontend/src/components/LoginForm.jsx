@@ -47,14 +47,14 @@ function LoginForm() {
                     {errors && <div className='w-3/4 text-xs text-errors mb-4'>
                         {errors}
                     </div>}
-                    <div className='flex flex-row items-center justify-between w-3/4 mb-16'>
+                    {/* <div className='flex flex-row items-center justify-between w-3/4'>
                         <div className='flex flex-row items-center justify-start gap-2'>
                             <input type="checkbox" onChange={(e) => { setInputs({ ...inputs, remember: e.target.value }) }} className='h-3 w-3 text-light-pink' />
                             <label className='text-text font-medium text-xs'>Remember Me</label>
                         </div>
                         <a href="." className='decoration-none text-light-pink text-xs'>Forget your password?</a>
-                    </div>
-                    <button className='w-3/4 text-white rounded-md outline-none border-none bg-gradient-to-r from-light-pink to-dark-pink h-[50px] font-medium text-sm'>Login</button>
+                    </div> */}
+                    <button className='mt-16 w-3/4 text-white rounded-md outline-none border-none bg-gradient-to-r from-light-pink to-dark-pink h-[50px] font-medium text-sm'>Login</button>
                     <div className='flex flex-row items-center justify-center gap-4 h-[50px] w-3/4 rounded-md border border-border-grey mt-4 cursor-pointer'>
                         <img src={googleLogo} alt="google" className='h-4 w-4' />
                         <span className='font-medium text-sm text-grey'>Sign in with Google</span>

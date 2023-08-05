@@ -5,9 +5,12 @@ import feather from "../assets/icons/feather.png";
 import WriteArticleForm from "../components/WriteArticleForm";
 import { useState, useEffect } from "react";
 import SmoothScroll from "../components/SmoothScroll";
+import LoadingPage from "../components/LoadingPage";
 
 function WriteArticle() {
     const [profile, setProfile] = useState(null);
+    const picturesUrl = "http://localhost:5000/picture/";
+
     useEffect(() => {
         setProfile(JSON.parse(localStorage.getItem("userInfo")));
     }, []);
@@ -16,8 +19,8 @@ function WriteArticle() {
         <>
             {profile ? <div id="feed" className="bg-gradient-to-b from-page-light-dark to-page-dark relative">
                 < AnimatedBg />
-                <div className="relative z-10">
-                    <NavBar profile={profile} />
+                <div className="relative z-10 min-h-[100vh]">
+                    <NavBar profile={profile} picturesUrl={picturesUrl} />
                     <SmoothScroll />
                     <div className="px-20 py-8">
                         <div className="pb-8 flex flex-row justify-start items-center gap-4">
@@ -28,7 +31,7 @@ function WriteArticle() {
                     </div>
                     <Footer />
                 </div>
-            </div > : <div>"Loading..."</div>
+            </div > : <LoadingPage />
             }
         </>
     );

@@ -4,22 +4,27 @@ import article from "../assets/icons/article.png";
 import feather from "../assets/icons/feather.png";
 import loadMoreImg from "../assets/icons/reload.png";
 import { useNavigate } from "react-router-dom";
+import LoadingComponent from "./LoadingComponent";
 
-function createArticleCards(articles) {
-    return articles.map(function (article) { return <ArticleCard infos={article} /> });
+function createArticleCards(articles, picturesUrl) {
+    return articles.map(function (article) { return <ArticleCard infos={article} picturesUrl={picturesUrl} /> });
 }
 
-function Feed({ articles, maxArticlesPerPage, setArticles, isProfile }) {
+function Feed({ articles, maxArticlesPerPage, setArticles, isProfile, picturesUrl }) {
     const navigate = new useNavigate();
     const [max, setMax] = useState(maxArticlesPerPage);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleLoadMore = () => {
+        setIsLoading(true);
         setMax(max + maxArticlesPerPage);
     }
 
     useEffect(() => {
         const fetchArticles = async () => {
+            console.log("rani han");
             var result = await fetch(`http://localhost:5000/articles/-${max}`, { credentials: "include" });
+            setIsLoading(false);
             if (result.status === 401 || result.status === 403) {
                 const data = await fetch("http://localhost:5000/refresh", { credentials: "include" });
                 if (data.status === 401 || data.status === 403) {
@@ -56,7 +61,7 @@ function Feed({ articles, maxArticlesPerPage, setArticles, isProfile }) {
             </div>
             <div className="flex flex-col justify-start items-strech">
                 <div>
-                    {createArticleCards(articles)}
+                    {createArticleCards(articles, picturesUrl)}
                 </div>
                 {articles.length === max &&
                     <button className="mt-8 flex flex-row items-center justify-center gap-4 border-2 px-4 py-2 rounded-md border-feed-border bg-load-more" onClick={handleLoadMore}>
@@ -64,6 +69,7 @@ function Feed({ articles, maxArticlesPerPage, setArticles, isProfile }) {
                         <span className="text-description font-semibold">Load more..</span>
                     </button>
                 }
+                {isLoading && <LoadingComponent />}
             </div>
         </div>
     );

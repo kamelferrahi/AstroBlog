@@ -5,7 +5,7 @@ import moonBg from "../assets/images/moon.jpg";
 
 function Footer() {
     return (
-        <div id="footer" className="pt-24 relative px-96" >
+        <div id="footer" className="pt-24 relative px-[20%]" >
             <div id="footer-bg">
             </div>
             <div>
@@ -13,12 +13,12 @@ function Footer() {
                     <img src={logo} alt="logo" className="h-12 object-cover -rotate-logo" />
                     <span className="text-card-title text-white font-bold logo">Astrotech</span>
                 </div>
-                <div className="flex flex-row items-center justify-between gap-10 mb-8 px-16">
-                    <p className="text-white text-mini-text text-justify">
+                <div className="flex flex-row items-center justify-between gap-4 mb-8 px-20">
+                    <p className="text-white text-mini-text text-justify px-10">
                         Astrotech" is the astronomy club of the National School of Computer Science (ESI ex INI).
                         Astrotech aims to carry out student projects dedicated to learning the deepest secrets of the vast universe in which we live; this is in order to create a community of computer scientists passionate about astronomy and space.
                     </p>
-                    <div className="p-2 bg-white rounded-md "><img src={esiLogo} alt="esi" className="object-contain" /></div>
+                    <img src={esiLogo} alt="esi" className="object-cover h-20 " />
                 </div>
                 <div className="flex flex-row items-start justify-between gap-10 mb-8">
                     <div>

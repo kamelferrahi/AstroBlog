@@ -10,14 +10,19 @@ import AddComment from "../components/AddComment";
 import commentsIcon from "../assets/icons/comment.png";
 import Reviews from "../components/Reviews";
 import SmoothScroll from "../components/SmoothScroll";
+import LoadingPage from "../components/LoadingPage";
+import LoadingComponent from "../components/LoadingComponent";
 
 function Article() {
     const [theme, setTheme] = useState({ theme: "dark" });
-    const [article, setArticle] = useState(null);
-    const [comments, setComments] = useState(null);
+    const [article, setArticle] = useState();
+    const [comments, setComments] = useState();
     const [profile, setProfile] = useState();
     const maxComments = 3;
     const [max, setMax] = useState(maxComments);
+    const [isLoading, setIsLoading] = useState(false);
+    const picturesUrl = "http://localhost:5000/picture/";
+
 
     document.title = article?.title ? article.title : "Astroblog";
 
@@ -76,12 +81,14 @@ function Article() {
     }
 
     const handleLoadMore = () => {
+        setIsLoading(true);
         setMax(max + maxComments);
     }
 
     useEffect(() => {
         const fetchComments = async () => {
             const result = await fetch(`http://localhost:5000/comments/${articleId}-${max}`, { credentials: "include" });
+            setIsLoading(false);
             if (result.status === 404 || result.status === 400) {
                 navigate("/E404");
             } else {
@@ -99,12 +106,12 @@ function Article() {
             {
                 article ? <div className="bg-gradient-to-b from-page-light-dark to-page-dark relative text-white" key={article.id}>
                     <SmoothScroll />
-                    <div className="relative z-10">
+                    <div className="relative z-10 min-h-[100vh]">
                         <div className="h-96 w-full">
                             <img src={article.img} alt="article" className="object-cover w-full h-full" />
                         </div>
                         <div className="absolute top-0 left-0 right-0">
-                            <NavBar profile={profile} />
+                            <NavBar profile={profile} picturesUrl={picturesUrl} />
                         </div>
                         <div className="px-20 py-10 flex flex-row items-start justify-between gap-4">
                             <div className="flex flex-row gap-2 items-center justify-start">
@@ -114,7 +121,7 @@ function Article() {
                             <div className="flex flex-row justify-start items-center gap-4">
                                 <div className="relative">
                                     <img src={article.community_profile} alt="community" className="h-[55px] w-[55px] rounded-[27.5px] object-cover" />
-                                    <img src={article.user_profile} alt="author" className="h-[20px] w-[20px] rounded-[10px] absolute bottom-0 right-0 object-cover" />
+                                    <img src={picturesUrl + article.user_profile} alt="author" className="h-[20px] w-[20px] rounded-[10px] absolute bottom-0 right-0 object-cover" />
                                 </div>
                                 <div className="flex flex-col gap-1 justify-start items-start">
                                     <span className="block text-small-subtitle text-white font-semibold">{article.user_name} | {article.community_name}</span>
@@ -130,7 +137,7 @@ function Article() {
                                 </div>
                             </div>
                         </div>
-                        <AddComment profile={profile} />
+                        <AddComment profile={profile} picturesUrl={picturesUrl} />
                         <div className="grid grid-cols-6 grid-rows-1 w-full mt-10 px-20 gap-4">
                             <div></div>
                             <div className="col-span-4">
@@ -148,24 +155,24 @@ function Article() {
                                         <img src={commentsIcon} alt="comment" className="h-[25px] w-[25px] block" />
                                         <span className="block text-white font-semibold text-card-title">Comments</span>
                                     </div>
-                                    {comments && < Comments comments={comments} />}
+                                    {comments && < Comments comments={comments} picturesUrl={picturesUrl} />}
                                 </div>
-                                {comments && comments.length === max &&
-                                    <>
-                                        <dir className="w-full flex justify-center items-center">
-                                            <button className="mt-8 flex flex-row items-center justify-center gap-4 border-2 px-4 py-2 rounded-md border-feed-border bg-load-more" onClick={handleLoadMore}>
-                                                <img className="h-4 w-4 opacity-70" src={loadMoreImg} alt="load more" />
-                                                <span className="text-description font-semibold">Load more..</span>
-                                            </button>
-                                        </dir>
-                                    </>
+                                {comments && comments.length === max && <>
+                                    <dir className="w-full flex justify-center items-center">
+                                        <button className="mt-8 flex flex-row items-center justify-center gap-4 border-2 px-4 py-2 rounded-md border-feed-border bg-load-more" onClick={handleLoadMore}>
+                                            <img className="h-4 w-4 opacity-70" src={loadMoreImg} alt="load more" />
+                                            <span className="text-description font-semibold">Load more..</span>
+                                        </button>
+                                    </dir>
+                                </>
                                 }
+                                {isLoading && <LoadingComponent />}
                             </div>
                             <Reviews alikes={article.article_likes} adislikes={article.article_dislikes} articleId={articleId} author={article.user_name} community={article.community_name} />
                         </div>
                         <Footer></Footer>
                     </div>
-                </div > : <span>loading ...</span>
+                </div > : <LoadingPage />
             }
         </>
 

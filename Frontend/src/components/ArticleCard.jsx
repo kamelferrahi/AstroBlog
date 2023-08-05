@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function ArticleCard({ infos }) {
+function ArticleCard({ infos, picturesUrl }) {
     const navigate = useNavigate();
     const createFields = () => {
         return infos.fields.map(function (field) { return <span className="border border-light-pink text-light-pink text-xs font-medium py-1 px-2 rounded-[10px] mr-2">{field}</span> });
@@ -12,7 +12,7 @@ function ArticleCard({ infos }) {
             <div className="flex flex-row items-center justify-start gap-4">
                 <div className="relative">
                     <img src={infos.community_profile} alt="community" className="h-[40px] w-[40px] rounded-[20px] object-cover" />
-                    <img src={infos.user_profile} alt="user" className="h-[15px] w-[15px] rounded-[8px] absolute bottom-0 right-0 object-cover" />
+                    <img src={picturesUrl + infos.user_profile} alt="user" className="h-[15px] w-[15px] rounded-[8px] absolute bottom-0 right-0 object-cover" />
                 </div>
                 <div>
                     <span className="block text-small-subtitle text-white font-semibold">{infos.user_name} | {infos.community_name}</span>

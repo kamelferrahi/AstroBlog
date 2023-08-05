@@ -12,6 +12,7 @@ const refresh = require("./Apis/refresh");
 const logout = require("./Apis/logout");
 const home = require("./Apis/home")
 const user = require("./Apis/user");
+const picture = require("./Apis/picture");
 
 const { Client } = require('@elastic/elasticsearch');
 
@@ -41,8 +42,9 @@ app.use("/articles", articles);
 app.use("/comments", comments);
 app.use("/communities", communities);
 app.use("/logout", logout);
-app.use("/home", home)
+app.use("/home", home);
 app.use("/user", user);
+app.use("/picture", picture);
 
 app.get("/", (req, res) => {
   res.status(200).send("This is the route of the backend server");

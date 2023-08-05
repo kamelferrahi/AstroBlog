@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-function Comments({ comments }) {
+function Comments({ comments, picturesUrl }) {
     const createComments = () => {
         return comments.map(function (comment) {
             return (
                 <div className="flex flex-row justify-start items-start mt-8 gap-4" key={"comment" + comment.user_name + comment.date + comment.time}>
-                    <img src={comment.user_pic} alt="user" className="h-[30px] w-[30px] rounded-full object-cover" />
+                    <img src={picturesUrl + comment.user_pic} alt="user" className="h-[30px] w-[30px] rounded-full object-cover" />
                     <div className="w-full">
                         <div className="flex flex-row items-start justify-between">
                             <div className="mb-2">
