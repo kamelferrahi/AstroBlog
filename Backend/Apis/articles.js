@@ -145,7 +145,7 @@ router.route("/-:max")
         );
     });
 
-router.route("/mine")
+router.route("/mine/-:max")
     .get(async (req, res, next) => {
         const token = req.cookies.token;
         jwt.verify(
@@ -155,8 +155,9 @@ router.route("/mine")
                 if (err) {
                     res.sendStatus(403);
                 } else {
+                    const max = parseInt(req.params.max);
                     const user = decoded.userId;
-                    const result = await getMyArticles(user);
+                    const result = await getMyArticles(user, max);
                     res.send({ articles: result, userId: req.userId });
                     next();
                 }

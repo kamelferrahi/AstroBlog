@@ -23,7 +23,7 @@ function SearchBar({ setShowNotification }) {
 
     const handleFocus = () => {
         setFocus(true);
-        setShowNotification(false);
+        if (setShowNotification) setShowNotification(false);
     }
     const handleUnFocus = () => {
         setFocus(false);

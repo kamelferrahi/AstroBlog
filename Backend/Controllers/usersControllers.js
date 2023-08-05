@@ -58,8 +58,52 @@ async function updateRefreshToken(id) {
 }
 
 async function getUserProfile(id) {
-    const [res] = await pool.query("SELECT fullname , profile_pic as img , bio , nb_publications as publications , nb_likes as likes from user where id = ?", [id]);
+    const [res] = await pool.query("SELECT fullname ,email, profile_pic as img , bio , nb_publications as publications , nb_likes as likes from user where id = ?", [id]);
     return res;
 }
 
-module.exports = { addNewUser, emailExists, getPassword, getUserId, setRefreshToken, refreshTokenExists, updateRefreshToken, getUserProfile };
+async function updateUser(id, inputs) {
+    let sql = "";
+    let params = [inputs.email, inputs.fullname];
+    if (inputs?.bio) {
+        params = [...params, inputs.bio];
+        if (inputs?.new_psw) {
+            const salt = await bcrypt.genSalt(10);
+            const password = await bcrypt.hash(inputs.new_psw, salt);
+            params = [...params, password];
+            sql = "UPDATE user set email = ?, fullname = ?, bio = ? , user_password = ? where id = ?";
+        } else {
+            sql = "UPDATE user set email = ?, fullname = ?, bio = ? where id = ?";
+        }
+    } else {
+        if (inputs?.new_psw) {
+            const salt = await bcrypt.genSalt(10);
+            const password = await bcrypt.hash(inputs.new_psw, salt);
+            params = [...params, password];
+            sql = "UPDATE user set email = ?, fullname = ?, user_password = ? where id = ?";
+        }
+    }
+    let row = undefined;
+    if (sql) {
+        params = [...params, id];
+        [row] = await pool.query(sql, params);
+    }
+    return row;
+}
+
+async function isMyEmail(email) {
+    const [rows] = await pool.query("SELECT id from user where email = ?", [email]);
+    return rows.length > 0 && rows.email == email;
+}
+
+async function getPasswordById(id) {
+    const [row] = await pool.query("SELECT user_password from user where id = ?", [id]);
+    return row[0];
+}
+
+async function updateUserPicture(id, picture) {
+    const [row] = await pool.query("UPDATE user set profile_pic = ? where id = ?", [picture, id]);
+    return row;
+}
+
+module.exports = { addNewUser, emailExists, getPassword, getUserId, setRefreshToken, refreshTokenExists, updateRefreshToken, getUserProfile, updateUser, isMyEmail, getPasswordById, updateUserPicture };

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import AnimatedBg from "../components/AnimatedBg";
 import filterIcon from "../assets/icons/filter.png";
-import searchIcon from '../assets/icons/search.png'
 import Contacts from "../components/Contacts";
 import Feed from "../components/Feed";
 import Footer from "../components/Footer";
@@ -10,6 +9,7 @@ import "../styles/pages/feed.css";
 import { useNavigate } from "react-router-dom";
 import SmoothScroll from "../components/SmoothScroll";
 import SearchBar from "../components/SearchBar";
+import LoadingPage from "../components/LoadingPage";
 
 
 
@@ -17,11 +17,14 @@ function Profile() {
     const [articles, setArticles] = useState([]);
     const [profile, setProfile] = useState();
     const [prevProfile, setPrevProfile] = useState();
+    const picturesUrl = "http://localhost:5000/picture/";
+    const maxArticlesPerPage = 3;
+
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchArticles = async () => {
-            var result = await fetch("http://localhost:5000/articles/mine", { credentials: "include" });
+            var result = await fetch(`http://localhost:5000/articles/mine/-${maxArticlesPerPage}`, { credentials: "include" });
             if (result.status === 401 || result.status === 403) {
                 const data = await fetch("http://localhost:5000/refresh", { credentials: "include" });
                 if (data.status === 401 || data.status === 403) {
@@ -62,15 +65,15 @@ function Profile() {
             {articles && profile?.fullname ?
                 <div id="feed" className="bg-gradient-to-b from-page-light-dark to-page-dark relative">
                     <AnimatedBg />
-                    <div className="relative z-10">
-                        <NavBar profile={profile} />
+                    <div className="relative z-10 min-h-[100vh]">
+                        <NavBar profile={profile} picturesUrl={picturesUrl} />
                         <SmoothScroll />
-                        <div className="px-20 flex flex-row gap-4 items-center justify-start mt-4 mb-24">
-                            <img src={profile?.img ? profile.img : ""} alt="profile" className="rounded-full h-[150px] w-[150px] object-cover p-0 m-0" />
+                        <div className="px-40 flex flex-row gap-4 items-center justify-start mt-4 mb-24">
+                            <img src={profile?.img ? picturesUrl + profile.img : ""} alt="profile" className="rounded-full h-[150px] w-[150px] object-cover p-0 m-0" />
                             <div className="flex flex-col items-start justify-end">
                                 <span className="text-big-title text-white font-bold mb-2">{profile.fullname}</span>
                                 <span className="text-subtitle text-sm font-semibold">bio</span>
-                                <span className="text-white text-sm w-1/2 mb-2">{profile.bio}</span>
+                                <span className="text-white text-sm w-full mb-2 max-w-[300px]">{profile.bio}</span>
                                 <span className="text-small-subtitle text-description font-semibold text-center w-full">{profile.likes} likes, {profile.publications} publications</span>
                             </div>
                         </div>
@@ -83,14 +86,14 @@ function Profile() {
                         </div>
                         <div className="px-20 grid grid-cols-8 grid-rows-1 gap-8 mt-4 mb-16">
                             <div></div>
-                            <Feed articles={articles} isProfile={true} />
+                            <Feed articles={articles} setArticles={setArticles} isProfile={true} maxArticlesPerPage={maxArticlesPerPage} />
                             <div className="col-span-2 h-full w-full relative">
                                 <Contacts userId={profile.id} />
                             </div>
                         </div>
                         <Footer />
                     </div>
-                </div > : <span>loading...</span>
+                </div > : <LoadingPage />
             }
         </>
 

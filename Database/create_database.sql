@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS USER(
     nb_publications int not null default 0,
     nb_likes int not null default 0,
     is_admin bool not null,
-    profile_pic varchar(200) not null default "https://cdn-icons-png.flaticon.com/256/149/149071.png",
+    profile_pic varchar(40) not null default "1389abb66624d55e38a3caed016dfd7c",
     category varchar(15) not null,
     details varchar(100),
     user_password varchar(100) not null,

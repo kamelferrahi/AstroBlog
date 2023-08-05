@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      lineHeight: {
+        'big': '250px'
+      },
       colors: {
         'text': 'black',
         'grey': '#393939',
@@ -23,6 +26,7 @@ module.exports = {
         'description': '#C2C2C2',
         'textarea': '#ffffff34',
         'load-more': '#ffffff20',
+        'transparent-pink': '#DE30B790'
       },
       fontSize: {
         '5xl': '9rem',

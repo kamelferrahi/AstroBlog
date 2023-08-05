@@ -8,7 +8,7 @@ import userIcon from "../assets/icons/personne.png";
 import settingsIcon from "../assets/icons/reglage.png";
 import disconnectIcon from "../assets/icons/eteindre.png";
 
-function FeedNavBar({ profile }) {
+function FeedNavBar({ profile, picturesUrl }) {
     const navigate = useNavigate();
     const [notifications, setNotifications] = useState([
         {
@@ -61,7 +61,7 @@ function FeedNavBar({ profile }) {
                 {showNotification && <Notifications notifications={notifications} />}
             </div>
             <div onClick={() => { setShowDropDownMenu(p => !p); setShowNotification(false); }} className="min-w-[80px] relative">
-                <img src={profile.img} alt="profile" className="cursor-pointer rounded-full h-[60px] w-[60px] object-cover" />
+                <img src={picturesUrl + profile.img} alt="profile" className="cursor-pointer rounded-full h-[60px] w-[60px] object-cover" />
                 {
                     showDropDownMenu && <div className="absolute top-[70px] right-[20px] bg-white rounded-md px-4 py-4 z-20 w-[200px]">
                         <div onClick={() => navigate("/profile")} className="cursor-pointer p-2 flex flex-row items-center justify-between gap-4 w-full hover:bg-input-light-grey rounded-md border-b border-border-grey">
