@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import topArticlesIcon from "../assets/icons/trophy.png";
 
-function TopArticles() {
+function TopArticles({ picturesUrl, host }) {
 
     const [topArticles, setTopArticles] = useState([]);
     const navigate = new useNavigate();
     useEffect(() => {
-        const url = "http://localhost:5000/articles/top";
+        const url = `${host}/articles/top`;
         const fetchTopArticles = async () => {
             const result = await fetch(url, { credentials: "include" });
             if (result.status == 200) {
@@ -29,7 +29,7 @@ function TopArticles() {
                 <div className="grid grid-cols-2 grid-rows-2 gap-10 mt-6">
                     <div className="w-full h-full row-span-2 cursor-pointer">
                         <div className="relative">
-                            <img src={topArticles[0].img} alt="article" className="h-64 w-full object-cover" onClick={() => { navigate(`/article/${topArticles[0].id}`) }} />
+                            <img src={picturesUrl + topArticles[0].img} alt="article" className="h-64 w-full object-cover" onClick={() => { navigate(`/article/${topArticles[0].id}`) }} />
                             <div className="absolute bottom-3 left-5 flex flex-row gap-2">
                                 {topArticles[0].fields.map(function (field) { return <span key={field} className="border border-light-pink text-light-pink text-xs font-medium py-1 px-2 rounded-[10px]">{field}</span>; })}
                             </div>
@@ -44,7 +44,7 @@ function TopArticles() {
                         </div>
                     </div>
                     <div className="w-full flex flex-row items-start justify-between gap-4 cursor-pointer">
-                        <img src={topArticles[1].img} alt="article" className="h-48 w-1/2 object-cover" onClick={() => { navigate(`/article/${topArticles[1].id}`) }} />
+                        <img src={picturesUrl + topArticles[1].img} alt="article" className="h-48 w-1/2 object-cover" onClick={() => { navigate(`/article/${topArticles[1].id}`) }} />
                         <div className="h-full w-1/2">
                             <span className="text-subtitle font-medium text-xs">{topArticles[1].date} {topArticles[1].time}</span>
                             <h3 className="text-white font-semibold text-lg my-4" onClick={() => { navigate(`/article/${topArticles[1].id}`) }}>{topArticles[1].title}</h3>
@@ -54,7 +54,7 @@ function TopArticles() {
                         </div>
                     </div>
                     <div className="w-full flex flex-row items-start justify-between gap-4 cursor-pointer">
-                        <img src={topArticles[2].img} alt="article" className="h-48 w-1/2 object-cover" onClick={() => { navigate(`/article/${topArticles[2].id}`) }} />
+                        <img src={picturesUrl + topArticles[2].img} alt="article" className="h-48 w-1/2 object-cover" onClick={() => { navigate(`/article/${topArticles[2].id}`) }} />
                         <div className="h-full w-1/2">
                             <span className="text-subtitle font-medium text-xs">{topArticles[2].date} {topArticles[2].time}</span>
                             <h3 className="text-white font-semibold text-lg my-4" onClick={() => { navigate(`/article/${topArticles[2].id}`) }}>{topArticles[2].title}</h3>

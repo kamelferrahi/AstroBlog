@@ -17,14 +17,15 @@ function Home() {
     const [articles, setArticles] = useState([]);
     const [profile, setProfile] = useState();
     const [prevProfile, setPrevProfile] = useState();
-    const picturesUrl = "http://localhost:5000/picture/";
+    const host = "http://localhost:5000";
+    const picturesUrl = `${host}/picture/`;
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchArticles = async () => {
-            var result = await fetch(`http://localhost:5000/articles/-${maxArticlesPerPage}`, { credentials: "include" });
+            var result = await fetch(`${host}/articles/-${maxArticlesPerPage}`, { credentials: "include" });
             if (result.status === 401 || result.status === 403) {
-                const data = await fetch("http://localhost:5000/refresh", { credentials: "include" });
+                const data = await fetch(`${host}/refresh`, { credentials: "include" });
                 if (data.status === 401 || data.status === 403) {
                     navigate("/login");
                 } else {
@@ -49,8 +50,8 @@ function Home() {
     useEffect(() => {
         const fetchProfile = (async () => {
             setPrevProfile(profile);
-            const result = await fetch(`http://localhost:5000/user/${profile.id}`, { credentials: "include" });
-            result.json().then(data => { setProfile({ ...profile, ...data }); localStorage.setItem('userInfo', JSON.stringify(profile)); });
+            const result = await fetch(`${host}/user/${profile.id}`, { credentials: "include" });
+            result.json().then(data => setProfile({ ...profile, ...data }));
         });
         if (JSON.stringify(profile) != JSON.stringify(prevProfile)) fetchProfile();
     }, [profile]);
@@ -63,13 +64,13 @@ function Home() {
                     <div className="relative z-10">
                         <FeedNavBar profile={profile} picturesUrl={picturesUrl} />
                         <SmoothScroll />
-                        <TopArticles />
+                        <TopArticles picturesUrl={picturesUrl} host={host} />
                         <div className="px-20 grid grid-cols-8 grid-rows-1 gap-8 mt-4 mb-16">
                             {/* <Banners /> */}
                             <div></div>
-                            <Feed articles={articles} maxArticlesPerPage={maxArticlesPerPage} setArticles={setArticles} picturesUrl={picturesUrl} />
+                            <Feed articles={articles} maxArticlesPerPage={maxArticlesPerPage} setArticles={setArticles} isProfile={false} picturesUrl={picturesUrl} host={host} />
                             <div className=" col-span-2 h-full w-full relative">
-                                <Contacts userId={profile.id} />
+                                <Contacts userId={profile.id} picturesUrl={picturesUrl} host={host} />
                             </div>
                         </div>
                         <Footer />

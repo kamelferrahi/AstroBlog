@@ -10,7 +10,7 @@ function createArticleCards(articles, picturesUrl) {
     return articles.map(function (article) { return <ArticleCard infos={article} picturesUrl={picturesUrl} /> });
 }
 
-function Feed({ articles, maxArticlesPerPage, setArticles, isProfile, picturesUrl }) {
+function Feed({ articles, maxArticlesPerPage, setArticles, isProfile, picturesUrl, host }) {
     const navigate = new useNavigate();
     const [max, setMax] = useState(maxArticlesPerPage);
     const [isLoading, setIsLoading] = useState(false);
@@ -23,10 +23,10 @@ function Feed({ articles, maxArticlesPerPage, setArticles, isProfile, picturesUr
     useEffect(() => {
         const fetchArticles = async () => {
             console.log("rani han");
-            var result = await fetch(`http://localhost:5000/articles/-${max}`, { credentials: "include" });
+            var result = await fetch(`${host}/articles/-${max}`, { credentials: "include" });
             setIsLoading(false);
             if (result.status === 401 || result.status === 403) {
-                const data = await fetch("http://localhost:5000/refresh", { credentials: "include" });
+                const data = await fetch(`${host}/refresh`, { credentials: "include" });
                 if (data.status === 401 || data.status === 403) {
                     navigate("/login");
                 } else {

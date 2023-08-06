@@ -7,12 +7,12 @@ import passwordIcon from '../assets/icons/password.png';
 import googleLogo from '../assets/icons/google.png';
 import emailIcon from '../assets/icons/email.png';
 
-function SignupForm() {
+function SignupForm({ host }) {
     const [inputs, setInputs] = useState();
     const [checkedTerms, setCheckedTerms] = useState(false);
     const [showWhoRU, setShowWhoRU] = useState(false);
     const [errors, setErrors] = useState();
-    const url = "http://localhost:5000/register";
+    const url = `${host}/register`;
     const navigate = useNavigate();
     const handleSubmit = (event) => {
         setErrors({});

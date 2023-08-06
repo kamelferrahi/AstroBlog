@@ -17,16 +17,17 @@ function Profile() {
     const [articles, setArticles] = useState([]);
     const [profile, setProfile] = useState();
     const [prevProfile, setPrevProfile] = useState();
-    const picturesUrl = "http://localhost:5000/picture/";
+    const host = "http://localhost:5000";
+    const picturesUrl = `${host}/picture/`;
     const maxArticlesPerPage = 3;
 
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchArticles = async () => {
-            var result = await fetch(`http://localhost:5000/articles/mine/-${maxArticlesPerPage}`, { credentials: "include" });
+            var result = await fetch(`${host}/articles/mine/-${maxArticlesPerPage}`, { credentials: "include" });
             if (result.status === 401 || result.status === 403) {
-                const data = await fetch("http://localhost:5000/refresh", { credentials: "include" });
+                const data = await fetch(`${host}/refresh`, { credentials: "include" });
                 if (data.status === 401 || data.status === 403) {
                     navigate("/login");
                 } else {
@@ -51,9 +52,9 @@ function Profile() {
     useEffect(() => {
         const fetchProfile = (async () => {
             setPrevProfile(profile);
-            const result = await fetch(`http://localhost:5000/user/${profile.id}`, { credentials: "include" });
+            const result = await fetch(`${host}/user/${profile.id}`, { credentials: "include" });
             result.json().then(data => {
-                setProfile(prevalue => prevalue = { ...prevalue, ...data }); localStorage.setItem('userInfo', JSON.stringify(profile)); document.title = profile.fullname;
+                setProfile(prevalue => prevalue = { ...prevalue, ...data }); document.title = profile.fullname;
                 ;
             });
         });
@@ -66,7 +67,7 @@ function Profile() {
                 <div id="feed" className="bg-gradient-to-b from-page-light-dark to-page-dark relative">
                     <AnimatedBg />
                     <div className="relative z-10 min-h-[100vh]">
-                        <NavBar profile={profile} picturesUrl={picturesUrl} />
+                        <NavBar profile={profile} picturesUrl={picturesUrl} host={host} />
                         <SmoothScroll />
                         <div className="px-40 flex flex-row gap-4 items-center justify-start mt-4 mb-24">
                             <img src={profile?.img ? picturesUrl + profile.img : ""} alt="profile" className="rounded-full h-[150px] w-[150px] object-cover p-0 m-0" />
@@ -86,9 +87,9 @@ function Profile() {
                         </div>
                         <div className="px-20 grid grid-cols-8 grid-rows-1 gap-8 mt-4 mb-16">
                             <div></div>
-                            <Feed articles={articles} setArticles={setArticles} isProfile={true} maxArticlesPerPage={maxArticlesPerPage} />
+                            <Feed articles={articles} maxArticlesPerPage={maxArticlesPerPage} setArticles={setArticles} isProfile={true} picturesUrl={picturesUrl} host={host} />
                             <div className="col-span-2 h-full w-full relative">
-                                <Contacts userId={profile.id} />
+                                <Contacts userId={profile.id} picturesUrl={picturesUrl} host={host} />
                             </div>
                         </div>
                         <Footer />

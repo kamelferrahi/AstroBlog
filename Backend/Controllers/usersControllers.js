@@ -102,8 +102,9 @@ async function getPasswordById(id) {
 }
 
 async function updateUserPicture(id, picture) {
+    const [old_picture] = await pool.query("SELECT profile_pic from user where id = ?", [id]);
     const [row] = await pool.query("UPDATE user set profile_pic = ? where id = ?", [picture, id]);
-    return row;
+    return old_picture[0].profile_pic;
 }
 
 module.exports = { addNewUser, emailExists, getPassword, getUserId, setRefreshToken, refreshTokenExists, updateRefreshToken, getUserProfile, updateUser, isMyEmail, getPasswordById, updateUserPicture };

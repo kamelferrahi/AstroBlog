@@ -5,6 +5,7 @@ const validateInputs = require("../Middlewares/validateInputs");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const upload = multer({ dest: "ProfilePictures/" });
+const fs = require("fs");
 
 router.route("/")
     .get(async (req, res, next) => {
@@ -64,9 +65,10 @@ router.route("/updatePicture")
                 if (err) {
                     res.sendStatus(403);
                 } else {
-                    console.log(req.file);
                     const user = decoded.userId;
                     const result = await updateUserPicture(user, req.file.filename);
+                    const path = `AllPictures/${result}`;
+                    fs.unlinkSync(path);
                     res.status(200);
                     next();
                 }

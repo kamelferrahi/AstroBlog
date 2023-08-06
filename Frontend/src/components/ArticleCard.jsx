@@ -6,12 +6,11 @@ function ArticleCard({ infos, picturesUrl }) {
     const createFields = () => {
         return infos.fields.map(function (field) { return <span className="border border-light-pink text-light-pink text-xs font-medium py-1 px-2 rounded-[10px] mr-2">{field}</span> });
     }
-
     return (
         <div className="mt-10 border-b border-feed-border pb-4">
             <div className="flex flex-row items-center justify-start gap-4">
                 <div className="relative">
-                    <img src={infos.community_profile} alt="community" className="h-[40px] w-[40px] rounded-[20px] object-cover" />
+                    <img src={picturesUrl + infos.community_profile} alt="community" className="h-[40px] w-[40px] rounded-[20px] object-cover" />
                     <img src={picturesUrl + infos.user_profile} alt="user" className="h-[15px] w-[15px] rounded-[8px] absolute bottom-0 right-0 object-cover" />
                 </div>
                 <div>
@@ -27,7 +26,7 @@ function ArticleCard({ infos, picturesUrl }) {
                     <div>{createFields()}</div>
                     <span className="block mt-2 w-full text-right text-mini-text text-subtitle font-medium">{infos.comments} comments, {parseInt(infos.article_dislikes) + parseInt(infos.article_likes)} reviews</span>
                 </div>
-                <img src={infos.img} alt="article" className="h-[235px] w-2/5 object-cover cursor-pointer" onClick={() => { navigate(`/article/${infos.id}`); }} />
+                <img src={picturesUrl + infos.img} alt="article" className="h-[235px] w-2/5 object-cover cursor-pointer" onClick={() => { navigate(`/article/${infos.id}`); }} />
             </div>
         </div>
     );

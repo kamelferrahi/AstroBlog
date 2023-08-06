@@ -3,10 +3,10 @@ import sendIcon from "../assets/icons/send.png";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-function AddComment({ profile, picturesUrl }) {
+function AddComment({ profile, picturesUrl, host }) {
     const article = useParams().articleId;
     const [inputs, setInputs] = useState({ user: profile.id });
-    const url = `http://localhost:5000/comments/${article}`;
+    const url = `${host}/comments/${article}`;
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post(url, inputs, { withCredentials: true }).then(res => {

@@ -16,14 +16,14 @@ function createTags(tags) {
     });
 }
 
-function WriteArticleForm({ profile }) {
+function WriteArticleForm({ profile, host }) {
     const community = 1; //to remove
 
     const [tags, setTags] = useState([]);
     const [content, setContent] = useState("");
     const [inputs, setInputs] = useState({ author: profile.id, community: community });
     const navigate = new useNavigate();
-    const url = "http://localhost:5000/articles";
+    const url = `${host}/articles`;
     const handleSubmit = (event) => {
         event.preventDefault();
         axios.post(url, inputs, {

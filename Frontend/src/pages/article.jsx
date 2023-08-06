@@ -21,13 +21,21 @@ function Article() {
     const maxComments = 3;
     const [max, setMax] = useState(maxComments);
     const [isLoading, setIsLoading] = useState(false);
-    const picturesUrl = "http://localhost:5000/picture/";
+    const host = "http://localhost:5000/";
+    const picturesUrl = `${host}/picture/`;
 
 
     document.title = article?.title ? article.title : "Astroblog";
 
     useEffect(() => {
-        setProfile(JSON.parse(localStorage.getItem("userInfo")));
+        const fetchProfile = (async () => {
+            const result = await fetch(`${host}/user/mine`, { credentials: "include" });
+            result.json().then(data => {
+                setProfile(data); document.title = "New article ✨";
+                ;
+            });
+        });
+        fetchProfile();
     }, []);
 
     const articleId = useParams().articleId;
@@ -35,16 +43,16 @@ function Article() {
 
     useEffect(() => {
         const fetchArticle = async () => {
-            var result = await fetch(`http://localhost:5000/articles/${articleId}`, { credentials: "include" });
+            var result = await fetch(`${host}/articles/${articleId}`, { credentials: "include" });
             if (result.status === 404) {
                 navigate("/E404");
             }
             if (result.status === 401 || result.status === 403) {
-                const data = await fetch("http://localhost:5000/refresh", { credentials: "include" });
+                const data = await fetch(`${host}/refresh`, { credentials: "include" });
                 if (data.status === 401 || data.status === 403) {
                     navigate("/login");
                 } else {
-                    result = await fetch("http://localhost:5000/articles", { credentials: "include" });
+                    result = await fetch(`${host}/articles`, { credentials: "include" });
                     if (result.status !== 200) navigate("/login");
                 }
             }
@@ -57,7 +65,7 @@ function Article() {
 
     useEffect(() => {
         const fetchComments = async () => {
-            const result = await fetch(`http://localhost:5000/comments/${articleId}-${max}`, { credentials: "include" });
+            const result = await fetch(`${host}/comments/${articleId}-${max}`, { credentials: "include" });
             if (result.status === 404 || result.status === 400) {
                 navigate("/E404");
             } else {
@@ -87,7 +95,7 @@ function Article() {
 
     useEffect(() => {
         const fetchComments = async () => {
-            const result = await fetch(`http://localhost:5000/comments/${articleId}-${max}`, { credentials: "include" });
+            const result = await fetch(`${host}/comments/${articleId}-${max}`, { credentials: "include" });
             setIsLoading(false);
             if (result.status === 404 || result.status === 400) {
                 navigate("/E404");
@@ -108,10 +116,10 @@ function Article() {
                     <SmoothScroll />
                     <div className="relative z-10 min-h-[100vh]">
                         <div className="h-96 w-full">
-                            <img src={article.img} alt="article" className="object-cover w-full h-full" />
+                            <img src={picturesUrl + article.img} alt="article" className="object-cover w-full h-full" />
                         </div>
                         <div className="absolute top-0 left-0 right-0">
-                            <NavBar profile={profile} picturesUrl={picturesUrl} />
+                            <NavBar profile={profile} picturesUrl={picturesUrl} host={host} />
                         </div>
                         <div className="px-20 py-10 flex flex-row items-start justify-between gap-4">
                             <div className="flex flex-row gap-2 items-center justify-start">
@@ -120,7 +128,7 @@ function Article() {
                             </div>
                             <div className="flex flex-row justify-start items-center gap-4">
                                 <div className="relative">
-                                    <img src={article.community_profile} alt="community" className="h-[55px] w-[55px] rounded-[27.5px] object-cover" />
+                                    <img src={picturesUrl + article.community_profile} alt="community" className="h-[55px] w-[55px] rounded-[27.5px] object-cover" />
                                     <img src={picturesUrl + article.user_profile} alt="author" className="h-[20px] w-[20px] rounded-[10px] absolute bottom-0 right-0 object-cover" />
                                 </div>
                                 <div className="flex flex-col gap-1 justify-start items-start">
@@ -137,7 +145,7 @@ function Article() {
                                 </div>
                             </div>
                         </div>
-                        <AddComment profile={profile} picturesUrl={picturesUrl} />
+                        <AddComment profile={profile} picturesUrl={picturesUrl} host={host} />
                         <div className="grid grid-cols-6 grid-rows-1 w-full mt-10 px-20 gap-4">
                             <div></div>
                             <div className="col-span-4">
@@ -168,7 +176,7 @@ function Article() {
                                 }
                                 {isLoading && <LoadingComponent />}
                             </div>
-                            <Reviews alikes={article.article_likes} adislikes={article.article_dislikes} articleId={articleId} author={article.user_name} community={article.community_name} />
+                            <Reviews alikes={article.article_likes} adislikes={article.article_dislikes} articleId={articleId} author={article.user_name} community={article.community_name} host={host} />
                         </div>
                         <Footer></Footer>
                     </div>

@@ -5,7 +5,7 @@ const fs = require("fs");
 router.route("/:pic")
     .get((req, res, next) => {
         const imageName = req.params.pic;
-        const readStream = fs.createReadStream(`ProfilePictures/${imageName}`);
+        const readStream = fs.createReadStream(`AllPictures/${imageName}`);
         readStream.pipe(res);
     })
 
