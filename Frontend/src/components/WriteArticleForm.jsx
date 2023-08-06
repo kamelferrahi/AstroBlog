@@ -16,14 +16,13 @@ function createTags(tags) {
     });
 }
 
-function WriteArticleForm({ profile }) {
+function WriteArticleForm({ profile, host }) {
     const community = 1; //to remove
-
     const [tags, setTags] = useState([]);
     const [content, setContent] = useState("");
-    const [inputs, setInputs] = useState({ author: profile.id, community: community });
+    const [inputs, setInputs] = useState({ community: community });
     const navigate = new useNavigate();
-    const url = "http://localhost:5000/articles";
+    const url = `${host}/articles`;
     const handleSubmit = (event) => {
         event.preventDefault();
         axios.post(url, inputs, {
@@ -32,6 +31,9 @@ function WriteArticleForm({ profile }) {
             if (res.data.errors) {
                 console.log(res.data.errors);
             }
+            if (res.status == 401 || res.status == 403) navigate("/login");
+            if (res.status == 404) navigate("/E404");
+
             if (res.status === 200) {
                 navigate("/home");
             }

@@ -6,13 +6,25 @@ import WriteArticleForm from "../components/WriteArticleForm";
 import { useState, useEffect } from "react";
 import SmoothScroll from "../components/SmoothScroll";
 import LoadingPage from "../components/LoadingPage";
+import { useNavigate } from "react-router-dom";
 
 function WriteArticle() {
-    const [profile, setProfile] = useState(null);
-    const picturesUrl = "http://localhost:5000/picture/";
+    const navigate = useNavigate();
+    const [profile, setProfile] = useState();
+    const host = "http://localhost:5000";
+    const picturesUrl = `${host}/picture/`;
 
     useEffect(() => {
-        setProfile(JSON.parse(localStorage.getItem("userInfo")));
+        const fetchProfile = (async () => {
+            const result = await fetch(`${host}/user/mine`, { credentials: "include" });
+            if (result.status == 401 || result.status == 403) navigate("/login");
+            if (result.status == 404) navigate("/E404");
+            result.json().then(data => {
+                setProfile(data); document.title = "New article ✨";
+                ;
+            });
+        });
+        fetchProfile();
     }, []);
 
     return (
@@ -20,14 +32,14 @@ function WriteArticle() {
             {profile ? <div id="feed" className="bg-gradient-to-b from-page-light-dark to-page-dark relative">
                 < AnimatedBg />
                 <div className="relative z-10 min-h-[100vh]">
-                    <NavBar profile={profile} picturesUrl={picturesUrl} />
+                    <NavBar profile={profile} picturesUrl={picturesUrl} host={host} />
                     <SmoothScroll />
                     <div className="px-20 py-8">
                         <div className="pb-8 flex flex-row justify-start items-center gap-4">
                             <img src={feather} alt="top articles" className="h-5 w-5" />
                             <h2 className="font-semibold text-big-title text-white">New Article</h2>
                         </div>
-                        <WriteArticleForm profile={profile} />
+                        <WriteArticleForm profile={profile} host={host} />
                     </div>
                     <Footer />
                 </div>

@@ -81,6 +81,8 @@ async function updateUser(id, inputs) {
             const password = await bcrypt.hash(inputs.new_psw, salt);
             params = [...params, password];
             sql = "UPDATE user set email = ?, fullname = ?, user_password = ? where id = ?";
+        } else {
+            sql = "UPDATE user set email= ?, fullname = ? where id = ?";
         }
     }
     let row = undefined;
@@ -102,8 +104,9 @@ async function getPasswordById(id) {
 }
 
 async function updateUserPicture(id, picture) {
+    const [old_picture] = await pool.query("SELECT profile_pic from user where id = ?", [id]);
     const [row] = await pool.query("UPDATE user set profile_pic = ? where id = ?", [picture, id]);
-    return row;
+    return old_picture[0].profile_pic;
 }
 
 module.exports = { addNewUser, emailExists, getPassword, getUserId, setRefreshToken, refreshTokenExists, updateRefreshToken, getUserProfile, updateUser, isMyEmail, getPasswordById, updateUserPicture };

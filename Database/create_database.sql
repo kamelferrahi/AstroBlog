@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS USER(
     nb_publications int not null default 0,
     nb_likes int not null default 0,
     is_admin bool not null,
-    profile_pic varchar(40) not null default "1389abb66624d55e38a3caed016dfd7c",
+    profile_pic varchar(40) not null default "1deb11455a576ce8458fc595e1ece643",
     category varchar(15) not null,
     details varchar(100),
     user_password varchar(100) not null,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS USER(
 CREATE TABLE IF NOT EXISTS COMMUNITY(
     id int primary key AUTO_INCREMENT,
     community_name varchar(100) not null,
-    profile_img varchar(200) not null,
+    profile_img varchar(40) not null,
     nb_followers int not null default 0,
     nb_likes int not null default 0
 );

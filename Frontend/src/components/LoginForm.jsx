@@ -6,11 +6,11 @@ import userIcon from '../assets/icons/user.png';
 import passwordIcon from '../assets/icons/password.png';
 import googleLogo from '../assets/icons/google.png';
 
-function LoginForm() {
+function LoginForm({ host }) {
     const [inputs, setInputs] = useState();
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
-    const url = "http://localhost:5000/login";
+    const url = `${host}/login`;
 
     const handleSubmit = (event) => {
         setErrors(null);

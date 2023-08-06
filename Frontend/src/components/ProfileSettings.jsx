@@ -3,7 +3,7 @@ import settingsIcon from "../assets/icons/settings.png"
 import pen from "../assets/icons/pen.png"
 
 function ProfileSettings({ profile, setInputs, inputs, errors, setPicture, picturesUrl }) {
-    const [currentPicture, setCurrentPicture] = useState(profile.img);
+    const [currentPicture, setCurrentPicture] = useState(picturesUrl + profile.img);
     return (
         <div id="profile" className="mb-14">
             < div className="pb-2 border-b-2 border-feed-border flex flex-row justify-start items-center gap-4" >
@@ -25,7 +25,7 @@ function ProfileSettings({ profile, setInputs, inputs, errors, setPicture, pictu
                 </div>
                 <div className="relative">
                     <div className="w-48 h-48 overflow-hidden rounded-full">
-                        <img src={picturesUrl + currentPicture} alt="Profile picture" className="w-full h-full object-cover" />
+                        <img src={currentPicture} alt="Profile picture" className="w-full h-full object-cover" />
                     </div>
                     <div className="absolute bottom-2 right-0 left-0 py-2 px-4 mx-4 bg-zinc-800 rounded-md flex flex-row gap-2 items-center justify-center">
                         <img src={pen} alt="google" className='h-4 w-4' />

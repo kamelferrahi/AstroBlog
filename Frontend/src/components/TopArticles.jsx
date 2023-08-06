@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import topArticlesIcon from "../assets/icons/trophy.png";
 
-function TopArticles() {
+function TopArticles({ host }) {
 
     const [topArticles, setTopArticles] = useState([]);
     const navigate = new useNavigate();
     useEffect(() => {
-        const url = "http://localhost:5000/articles/top";
+        const url = `${host}/articles/top`;
         const fetchTopArticles = async () => {
             const result = await fetch(url, { credentials: "include" });
+            if (result.status == 401 || result.status == 403) navigate("/login");
+            if (result.status == 404) navigate("/E404");
             if (result.status == 200) {
                 result.json().then(json => setTopArticles(json));
-            } else {
-                navigate("/E404");
             }
         }
         fetchTopArticles();

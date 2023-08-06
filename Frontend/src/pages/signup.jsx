@@ -4,9 +4,10 @@ import MoonScene from '../components/MoonScene';
 import SignupForm from '../components/SignupForm';
 
 function Signup() {
+  const host = "http://localhost:5000";
   return (
     <div className='page-container login grid grid-cols-2 grid-rows-1 place-items-stretch overflow-x-hidden font-text'>
-      <SignupForm />
+      <SignupForm host={host} />
       <div className="h-full w-1/2 flex flex-col justify-center items-center bg-black p-5 bg-signIllustration fixed right-0">
         <div id="illustration" className='flex flex-col justify-center items-center w-1/2 h-full absolute z-10'>
           {/* <MoonScene /> */}

@@ -4,6 +4,7 @@ import MoonScene from '../components/MoonScene';
 import LoginForm from '../components/LoginForm';
 
 function Login() {
+  const host = "http://localhost:5000";
   return (
     <div className='page-container login grid grid-cols-2 grid-rows-1 place-items-stretch overflow-x-hidden font-text'>
       <div className="h-full w-1/2 flex flex-col justify-center items-center bg-black p-5 bg-signIllustration fixed left-0">
@@ -22,7 +23,7 @@ function Login() {
         </div>
       </div >
       <div className='w-1/2 fixed right-0 top-0 overflow-y-auto h-full'>
-        <LoginForm />
+        <LoginForm host={host} />
       </div>
     </div >
   );

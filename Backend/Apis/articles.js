@@ -11,13 +11,25 @@ router.route("/")
         next();
     })
     .post(async (req, res, next) => {
-        const result = await createArticle(req.body);
-        if (result.affectedRows > 0) {
-            res.status(201);
-            next();
-        } else {
-            res.sendStatus(400);
-        }
+        const token = req.cookies.token;
+        jwt.verify(
+            token,
+            process.env.ACCESS_TOKEN_SECRET,
+            async (err, decoded) => {
+                if (err) {
+                    res.sendStatus(403);
+                } else {
+                    const user = decoded.userId;
+                    const result = await createArticle(req.body, user);
+                    if (result.affectedRows > 0) {
+                        res.status(201);
+                        next();
+                    } else {
+                        res.sendStatus(400);
+                    }
+                }
+            }
+        );
     });
 
 router.route("/update_likes/:id")

@@ -8,7 +8,7 @@ import userIcon from "../assets/icons/personne.png";
 import settingsIcon from "../assets/icons/reglage.png";
 import disconnectIcon from "../assets/icons/eteindre.png";
 
-function FeedNavBar({ profile, picturesUrl }) {
+function FeedNavBar({ profile, picturesUrl, host }) {
     const navigate = useNavigate();
     const [notifications, setNotifications] = useState([
         {
@@ -40,7 +40,9 @@ function FeedNavBar({ profile, picturesUrl }) {
     }
 
     const handleLogout = async () => {
-        const res = await fetch("http://localhost:5000/logout", { credentials: "include" });
+        const res = await fetch(`${host}/logout`, { credentials: "include" });
+        if (res.status == 401 || res.status == 403) navigate("/login");
+        if (res.status == 404) navigate("/E404");
         if (res.status === 200) {
             navigate("/login");
         }
