@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS USER(
 CREATE TABLE IF NOT EXISTS COMMUNITY(
     id int primary key AUTO_INCREMENT,
     community_name varchar(100) not null,
+    community_description varchar(200),
     profile_img varchar(40) not null,
     nb_followers int not null default 0,
     nb_likes int not null default 0

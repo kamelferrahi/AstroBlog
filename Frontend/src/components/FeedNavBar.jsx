@@ -50,7 +50,7 @@ function FeedNavBar({ profile, picturesUrl, host }) {
 
     return (
         <div className="px-20 flex flex-row items-center justify-between gap-4 py-10">
-            <div className="flex flex-col items-center justify-center" onClick={() => {
+            <div className="flex flex-col items-center justify-center cursor-pointer" onClick={() => {
                 window.location.reload();
             }}>
                 <img src={logo} alt="logo" className="h-10 -rotate-logo" />
