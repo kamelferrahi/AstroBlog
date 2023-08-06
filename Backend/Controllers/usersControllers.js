@@ -81,6 +81,8 @@ async function updateUser(id, inputs) {
             const password = await bcrypt.hash(inputs.new_psw, salt);
             params = [...params, password];
             sql = "UPDATE user set email = ?, fullname = ?, user_password = ? where id = ?";
+        } else {
+            sql = "UPDATE user set email= ?, fullname = ? where id = ?";
         }
     }
     let row = undefined;

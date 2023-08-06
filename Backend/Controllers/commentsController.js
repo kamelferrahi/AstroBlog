@@ -19,9 +19,9 @@ async function getArticleComments(id) {
     return rows;
 }
 
-async function AddComment(comment, article) {
+async function AddComment(user, comment, article) {
     const cdate = new Date(Date.now());
-    const [row1] = await pool.query("INSERT into comment (article , user , date_time , comment_text) value (?, ? , ? ,?)", [article, comment.user, cdate, comment.comment_text]);
+    const [row1] = await pool.query("INSERT into comment (article , user , date_time , comment_text) value (?, ? , ? ,?)", [article, user, cdate, comment.comment_text]);
     let row2 = undefined;
     if (row1.affectedRows > 0) {
         [row2] = await pool.query("UPDATE article set nb_comments = nb_comments +1 where id = ?", [article]);

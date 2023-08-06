@@ -26,7 +26,7 @@ function ArticleCard({ infos, picturesUrl }) {
                     <div>{createFields()}</div>
                     <span className="block mt-2 w-full text-right text-mini-text text-subtitle font-medium">{infos.comments} comments, {parseInt(infos.article_dislikes) + parseInt(infos.article_likes)} reviews</span>
                 </div>
-                <img src={picturesUrl + infos.img} alt="article" className="h-[235px] w-2/5 object-cover cursor-pointer" onClick={() => { navigate(`/article/${infos.id}`); }} />
+                <img src={infos.img} alt="article" className="h-[235px] w-2/5 object-cover cursor-pointer" onClick={() => { navigate(`/article/${infos.id}`); }} />
             </div>
         </div>
     );

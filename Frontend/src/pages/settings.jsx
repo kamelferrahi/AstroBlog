@@ -16,24 +16,27 @@ function Settings() {
     const [errors, setErrors] = useState({});
     const [picture, setPicture] = useState();
     const navigate = new useNavigate();
-    const picturesUrl = "http://localhost:5000/picture/";
+    const host = "http://localhost:5000";
+    const picturesUrl = `${host}/picture/`;
     document.title = "Settings";
 
     useEffect(() => {
         const fetchProfile = (async () => {
-            const result = await fetch(`http://localhost:5000/user/mine`, { credentials: "include" });
+            const result = await fetch(`${host}/user/mine`, { credentials: "include" });
+            if (result.status == 401 || result.status == 403) navigate("/login");
+            if (result.status == 404) navigate("/E404");
             result.json().then(data => {
                 setProfile(data);
                 setInputs({ "email": data.email, "fullname": data.fullname })
-            }).catch(e => { if (e.status == 401 || e.status == 403) { navigate("/login"); } else { console.log(e) } })
+            }).catch(e => console.log(e));
         });
         fetchProfile();
     }, []);
 
     const handleEditProfile = async (e) => {
         e.preventDefault();
-        const url = "http://localhost:5000/user/update";
-        const url2 = "http://localhost:5000/user/updatePicture";
+        const url = `${host}/user/update`;
+        const url2 = `${host}/user/updatePicture`;
         if (inputs) {
             axios.post(url, inputs, {
                 withCredentials: true
@@ -41,6 +44,8 @@ function Settings() {
                 if (res.data.errors) {
                     console.log(res.data.errors);
                 }
+                if (res.status == 401 || res.status == 403) navigate("/login");
+                if (res.status == 404) navigate("/E404");
                 if (res.status === 200) {
                     console.log("success");
                 }
@@ -56,6 +61,9 @@ function Settings() {
                 if (res.data.errors) {
                     console.log(res.data.errors);
                 }
+                if (res.status == 401 || res.status == 403) navigate("/login");
+                if (res.status == 404) navigate("/E404");
+
                 if (res.status === 200) {
                     navigate("/profile");
                 }

@@ -22,7 +22,6 @@ function Feed({ articles, maxArticlesPerPage, setArticles, isProfile, picturesUr
 
     useEffect(() => {
         const fetchArticles = async () => {
-            console.log("rani han");
             var result = await fetch(`${host}/articles/-${max}`, { credentials: "include" });
             setIsLoading(false);
             if (result.status === 401 || result.status === 403) {

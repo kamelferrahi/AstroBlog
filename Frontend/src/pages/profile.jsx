@@ -53,6 +53,8 @@ function Profile() {
         const fetchProfile = (async () => {
             setPrevProfile(profile);
             const result = await fetch(`${host}/user/${profile.id}`, { credentials: "include" });
+            if (result.status == 401 || result.status == 403) navigate("/login");
+            if (result.status == 404) navigate("/E404");
             result.json().then(data => {
                 setProfile(prevalue => prevalue = { ...prevalue, ...data }); document.title = profile.fullname;
                 ;

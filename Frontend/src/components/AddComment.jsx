@@ -1,15 +1,18 @@
 import { useState } from "react";
 import sendIcon from "../assets/icons/send.png";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function AddComment({ profile, picturesUrl, host }) {
+    const navigate = useNavigate();
     const article = useParams().articleId;
-    const [inputs, setInputs] = useState({ user: profile.id });
+    const [inputs, setInputs] = useState();
     const url = `${host}/comments/${article}`;
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post(url, inputs, { withCredentials: true }).then(res => {
+            if (res.status == 401 || res.status == 403) navigate("/login");
+            if (res.status == 404) navigate("/E404");
             if (res.data.errors) {
                 console.log(res.data.errors);
             } else {

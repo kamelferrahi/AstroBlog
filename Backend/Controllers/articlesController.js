@@ -44,10 +44,10 @@ async function getArticle(id) {
     return row;
 }
 
-async function createArticle(article) {
+async function createArticle(article, user) {
     const cdate = new Date(Date.now());
     const fields = article.fields;
-    const [row1] = await pool.query("INSERT into article (author , community , date_time, title , article_description , article_img , content) values (? , ? ,? ,? ,? , ? , ?) ", [article.author, article.community, cdate, article.title, article.article_description, article.article_img, article.content]);
+    const [row1] = await pool.query("INSERT into article (author , community , date_time, title , article_description , article_img , content) values (? , ? ,? ,? ,? , ? , ?) ", [user, article.community, cdate, article.title, article.article_description, article.article_img, article.content]);
     let row2 = undefined;
     if (row1.affectedRows > 0 && fields && fields.length > 0) {
         const combo = fields.map(f => `('${f}',${row1.insertId})`);
@@ -55,7 +55,7 @@ async function createArticle(article) {
     }
     let row3 = undefined;
     if (row2 && row2.affectedRows > 0) {
-        [row3] = await pool.query("UPDATE user set nb_publications = nb_publications + 1 where id = ?", [article.author]);
+        [row3] = await pool.query("UPDATE user set nb_publications = nb_publications + 1 where id = ?", [user]);
     }
     return row3 ? row3 : row2 ? row2 : row1;
 }

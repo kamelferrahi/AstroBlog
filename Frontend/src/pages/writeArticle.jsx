@@ -6,15 +6,19 @@ import WriteArticleForm from "../components/WriteArticleForm";
 import { useState, useEffect } from "react";
 import SmoothScroll from "../components/SmoothScroll";
 import LoadingPage from "../components/LoadingPage";
+import { useNavigate } from "react-router-dom";
 
 function WriteArticle() {
-    const [profile, setProfile] = useState(null);
+    const navigate = useNavigate();
+    const [profile, setProfile] = useState();
     const host = "http://localhost:5000";
     const picturesUrl = `${host}/picture/`;
 
     useEffect(() => {
         const fetchProfile = (async () => {
             const result = await fetch(`${host}/user/mine`, { credentials: "include" });
+            if (result.status == 401 || result.status == 403) navigate("/login");
+            if (result.status == 404) navigate("/E404");
             result.json().then(data => {
                 setProfile(data); document.title = "New article ✨";
                 ;

@@ -51,6 +51,8 @@ function Home() {
         const fetchProfile = (async () => {
             setPrevProfile(profile);
             const result = await fetch(`${host}/user/${profile.id}`, { credentials: "include" });
+            if (result.status == 401 || result.status == 403) navigate("/login");
+            if (result.status == 404) navigate("/E404");
             result.json().then(data => setProfile({ ...profile, ...data }));
         });
         if (JSON.stringify(profile) != JSON.stringify(prevProfile)) fetchProfile();
@@ -62,9 +64,9 @@ function Home() {
                 <div id="feed" className="bg-gradient-to-b from-page-light-dark to-page-dark relative">
                     <AnimatedBg />
                     <div className="relative z-10">
-                        <FeedNavBar profile={profile} picturesUrl={picturesUrl} />
+                        <FeedNavBar profile={profile} picturesUrl={picturesUrl} host={host} />
                         <SmoothScroll />
-                        <TopArticles picturesUrl={picturesUrl} host={host} />
+                        <TopArticles host={host} />
                         <div className="px-20 grid grid-cols-8 grid-rows-1 gap-8 mt-4 mb-16">
                             {/* <Banners /> */}
                             <div></div>

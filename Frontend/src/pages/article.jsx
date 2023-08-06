@@ -21,7 +21,7 @@ function Article() {
     const maxComments = 3;
     const [max, setMax] = useState(maxComments);
     const [isLoading, setIsLoading] = useState(false);
-    const host = "http://localhost:5000/";
+    const host = "http://localhost:5000";
     const picturesUrl = `${host}/picture/`;
 
 
@@ -32,7 +32,6 @@ function Article() {
             const result = await fetch(`${host}/user/mine`, { credentials: "include" });
             result.json().then(data => {
                 setProfile(data); document.title = "New article ✨";
-                ;
             });
         });
         fetchProfile();
@@ -66,14 +65,12 @@ function Article() {
     useEffect(() => {
         const fetchComments = async () => {
             const result = await fetch(`${host}/comments/${articleId}-${max}`, { credentials: "include" });
-            if (result.status === 404 || result.status === 400) {
-                navigate("/E404");
-            } else {
-                result.json().then(json => {
-                    setComments(json);
-                    document.title = json.title;
-                })
-            }
+            if (result.status == 401 || result.status == 403) navigate("/login");
+            if (result.status == 404) navigate("/E404");
+            result.json().then(json => {
+                setComments(json);
+                document.title = json.title;
+            });
         };
         fetchComments();
     }, []);
@@ -116,7 +113,7 @@ function Article() {
                     <SmoothScroll />
                     <div className="relative z-10 min-h-[100vh]">
                         <div className="h-96 w-full">
-                            <img src={picturesUrl + article.img} alt="article" className="object-cover w-full h-full" />
+                            <img src={article.img} alt="article" className="object-cover w-full h-full" />
                         </div>
                         <div className="absolute top-0 left-0 right-0">
                             <NavBar profile={profile} picturesUrl={picturesUrl} host={host} />

@@ -4,7 +4,7 @@ import likesFillIcon from "../assets/icons/like-fill.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function updateLikes(action, id, author, community, host) {
+function updateLikes(action, id, author, community, host, navigate) {
     const url = `${host}/articles/update_likes/${id}`;
     axios.post(url, { "action": action, "author": author, "community": community }, {
         withCredentials: true,
@@ -18,7 +18,7 @@ function updateLikes(action, id, author, community, host) {
     }).catch(err => { console.log(err.response.data); });
 }
 
-function updateDislikes(action, id, author, community) {
+function updateDislikes(action, id, author, community, host, navigate) {
     const url = `${host}/articles/update_dislikes/${id}`;
     axios.post(url, { "action": action, "author": author, "community": community }, {
         withCredentials: true,
@@ -26,13 +26,16 @@ function updateDislikes(action, id, author, community) {
         if (res.data.errors) {
             console.log(res.data.errors);
         }
+        if (res.status == 401 || res.status == 403) navigate("/login");
+        if (res.status == 404) navigate("/E404");
+
         if (res.status === 200) {
             window.location.reload();
         }
     }).catch(err => { console.log(err.response.data); });
 }
 
-function Reviews({ alikes, adislikes, articleId, author, community }) {
+function Reviews({ alikes, adislikes, articleId, author, community, host }) {
     const [likes, setLikes] = useState(alikes);
     const [dislikes, setDislikes] = useState(adislikes);
     const [likesChanged, setLikesChanged] = useState();
@@ -42,11 +45,11 @@ function Reviews({ alikes, adislikes, articleId, author, community }) {
         if (!likesChanged) {
             setLikes(likes + 1);
             setLikesChanged(true);
-            updateLikes("increase", articleId, author, community);
+            updateLikes("increase", articleId, author, community, host, navigate);
             if (dislikesChanged) {
                 setDislikes(dislikes - 1);
                 setDislikesChanged(false);
-                updateDislikes("decrease", articleId, author, community);
+                updateDislikes("decrease", articleId, author, community, host, navigate);
             }
         } else {
             setLikes(likes - 1);

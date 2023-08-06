@@ -16,9 +16,10 @@ function Contacts({ userId, picturesUrl, host }) {
             const result = await fetch(url, { credentials: "include" });
             if (result.status == 200) {
                 result.json().then(json => setMyCommunities(json));
-            } else {
-                navigate("/E404");
             }
+            if (result.status == 401 || result.status == 403) navigate("/login");
+            if (result.status == 404) navigate("/E404");
+
         }
         fetchMyCommunites();
     }, []);
