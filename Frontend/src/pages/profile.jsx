@@ -74,8 +74,9 @@ function Profile() {
                         <div className="px-40 flex flex-row gap-4 items-center justify-start mt-4 mb-24">
                             <img src={profile?.img ? picturesUrl + profile.img : ""} alt="profile" className="rounded-full h-[150px] w-[150px] object-cover p-0 m-0" />
                             <div className="flex flex-col items-start justify-end">
-                                <span className="text-big-title text-white font-bold mb-2">{profile.fullname}</span>
-                                <span className="text-subtitle text-sm font-semibold">bio</span>
+                                <span className="text-big-title text-white font-bold">{profile.fullname}</span>
+                                <span className="text-subtitle text-sm">{profile.email}</span>
+                                <span className="text-subtitle text-sm font-semibold mt-2">bio</span>
                                 <span className="text-white text-sm w-full mb-2 max-w-[300px]">{profile.bio}</span>
                                 <span className="text-small-subtitle text-description font-semibold text-center w-full">{profile.likes} likes, {profile.publications} publications</span>
                             </div>

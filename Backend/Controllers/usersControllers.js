@@ -64,25 +64,25 @@ async function getUserProfile(id) {
 
 async function updateUser(id, inputs) {
     let sql = "";
-    let params = [inputs.email, inputs.fullname];
+    let params = [inputs.fullname];
     if (inputs?.bio) {
         params = [...params, inputs.bio];
         if (inputs?.new_psw) {
             const salt = await bcrypt.genSalt(10);
             const password = await bcrypt.hash(inputs.new_psw, salt);
             params = [...params, password];
-            sql = "UPDATE user set email = ?, fullname = ?, bio = ? , user_password = ? where id = ?";
+            sql = "UPDATE user set fullname = ?, bio = ? , user_password = ? where id = ?";
         } else {
-            sql = "UPDATE user set email = ?, fullname = ?, bio = ? where id = ?";
+            sql = "UPDATE user set fullname = ?, bio = ? where id = ?";
         }
     } else {
         if (inputs?.new_psw) {
             const salt = await bcrypt.genSalt(10);
             const password = await bcrypt.hash(inputs.new_psw, salt);
             params = [...params, password];
-            sql = "UPDATE user set email = ?, fullname = ?, user_password = ? where id = ?";
+            sql = "UPDATE user set fullname = ?, user_password = ? where id = ?";
         } else {
-            sql = "UPDATE user set email= ?, fullname = ? where id = ?";
+            sql = "UPDATE user set fullname = ? where id = ?";
         }
     }
     let row = undefined;
