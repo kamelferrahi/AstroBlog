@@ -54,10 +54,22 @@ async function createArticle(article, user) {
         [row2] = await pool.query("INSERT into field values " + combo.toString(), []);
     }
     let row3 = undefined;
-    if (row2 && row2.affectedRows > 0) {
+    if ((fields && fields.length > 0 && row2 && row2.affectedRows > 0) || (row2 == undefined && row1 && row1.affectedRows > 0)) {
         [row3] = await pool.query("UPDATE user set nb_publications = nb_publications + 1 where id = ?", [user]);
     }
-    return row3 ? row3 : row2 ? row2 : row1;
+    let row4 = undefined;
+    if (row3 && row3.affectedRows > 0) {
+        console.log("rani hna");
+        const title = `New article in ${article.community}`;
+        const link = `/article/${row1.insertId}`;
+        [row4] = await pool.query("INSERT INTO notif (title,picture,date_time,link) value (?,?,?,?)", [title, article.article_img, cdate, link]);
+    }
+    let row5 = undefined;
+    if (row4 && row4.affectedRows > 0) {
+        console.log("rani hna");
+        [row5] = await pool.query("INSERT INTO user_notif (id_user,id_notif) select id , ? from user where id != ? and id in (select id_user from user_community where id_community = ?)", [row4.insertId, user, article.community]);
+    }
+    return row5 ? row5 : row4 ? row4 : row3 ? row3 : row2 ? row2 : row1;
 }
 
 async function updateLikes(id, user, params) {

@@ -131,7 +131,7 @@ function Community() {
                                     <span className="text-small-subtitle text-description font-semibold text-center w-full">{community.nb_likes} likes, {community.nb_followers} followers</span>
                                 </div>
                             </div>
-                            <button className="block border-2 rounded-md border-feed-border text-description text-md font-medium px-4 py-2" onClick={handleClick}>{community.isFollower ? "unfollow" : "follow"}</button>
+                            {community.id != 1 && <button className="block border-2 rounded-md border-feed-border text-description text-md font-medium px-4 py-2" onClick={handleClick}>{community.isFollower ? "unfollow" : "follow"}</button>}
                         </div>
                         <div className="px-20 grid grid-cols-8 grid-rows-1 gap-8 mt-4 mb-8">
                             <div></div>

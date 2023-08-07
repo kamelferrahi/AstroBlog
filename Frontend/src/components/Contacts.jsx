@@ -8,7 +8,6 @@ function Contacts({ userId, picturesUrl, host }) {
     const [suggestions, setSuggestions] = useState([]);
     const [my_communities, setMyCommunities] = useState([]);
     const navigate = new useNavigate();
-    const ourClubName = "Astrotech club";
 
     useEffect(() => {
         const fetchMyCommunites = async () => {
@@ -62,7 +61,7 @@ function Contacts({ userId, picturesUrl, host }) {
                         <span className="block text-mini-text text-subtitle font-medium">{community.followers} followers, {community.likes} likes</span>
                     </div>
                 </div>
-                {community.name != ourClubName && <button className="border-2 rounded-md border-feed-border text-description text-mini-text font-medium px-4 py-2" onClick={(e) => { handleUnfollow(e.target, community.id); }}>unfollow</button>}
+                {community.id != 1 && <button className="border-2 rounded-md border-feed-border text-description text-mini-text font-medium px-4 py-2" onClick={(e) => { handleUnfollow(e.target, community.id); }}>unfollow</button>}
             </div>;
         });
     }

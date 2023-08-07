@@ -81,3 +81,20 @@ CREATE TABLE IF NOT EXISTS USER_DISLIKES_ARTICLE(
     foreign key (article) references article(id),
     primary key (user , article)
 );
+
+CREATE TABLE IF NOT EXISTS NOTIF(
+    id int not null AUTO_INCREMENT primary key,
+    title varchar(100) not null,
+    picture varchar(200) not null,
+    date_time datetime not null,
+    link varchar(20) not null
+);
+
+CREATE TABLE IF NOT EXISTS USER_NOTIF(
+    id_notif int not null,
+    id_user int not null,
+    seen bool not null default 0,
+    primary key(id_notif , id_user),
+    foreign key (id_notif) references  NOTIF(id),
+    foreign key (id_user) references USER(id)
+);
