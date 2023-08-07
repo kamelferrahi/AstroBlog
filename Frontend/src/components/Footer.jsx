@@ -10,6 +10,7 @@ function Footer({ profile }) {
     const form = useRef();
     const sendEmail = (e) => {
         e.preventDefault();
+        //k6_TeWWtLOqIFoB7v
         emailjs.sendForm('service_wg3dy3t', 'template_6zpv402', form.current, 'MY_PUBLIC_KEY')
             .then((result) => {
                 console.log(result.text);
