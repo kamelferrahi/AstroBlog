@@ -172,7 +172,7 @@ function Article() {
                             </div>
                             <Reviews alikes={article.article_likes} adislikes={article.article_dislikes} articleId={articleId} author={article.user_name} community={article.community_name} host={host} dark={dark} />
                         </div>
-                        <Footer></Footer>
+                        <Footer profile={profile} />
                     </div>
                 </div > : <LoadingPage />
             }
